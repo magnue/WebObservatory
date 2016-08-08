@@ -1,0 +1,20 @@
+Webobservatory is authored by Magnus Eriksen, all rights reserved.
+
+
+The content in this project is licenced under GPL (see COPYING.GPL),
+except:
+
+./public/assets/*
+This is a 'modifyed' layout from HTML5 UP, and is licenced under:
+Creeative Commons Attribution 3.0 License
+https://html5up.net/license
+
+./public/images/*.*
+This is the default media on Webobservatory.
+Some is own work, and some is pictures from NASA collected from WikiMedia, and belonging to the public domain.
+
+./public/images/default-gallery-special-article.jpg
+./public/images/default-gallery-special-article-small.jpg
+This image is from Wikipedia.org https://en.wikipedia.org/wiki/C/2012_F6_%28Lemmon%29#/media/File:C2012F6Lemmon.jpg
+Image is produced by Massimozanardi, and licenced under
+Creative Commons BY-SA 3.0

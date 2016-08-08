@@ -1,0 +1,29 @@
+[Unit]
+Description=Webobservatory
+Requires=After=mongodb.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/forever -c /usr/bin/node /srv/webobservatory/server.js &
+WorkingDirectory=/srv/webobservatory
+
+User=www-data
+Group=www-data
+
+# Environment variables:
+Environment=NODE_ENV=production
+
+# Allow many incoming connections
+LimitNOFILE=infinity
+
+# Allow core dumps for debugging
+LimitCORE=infinity
+
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=webobservatory
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

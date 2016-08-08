@@ -1,0 +1,224 @@
+<!-- public/index.html -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        <base href="/">
+
+        <title>WebObservatory</title>
+
+        <!-- JS -->
+        <script src="libs/angular/angular.min.js"></script>
+        <script src="libs/angular-route/angular-route.min.js"></script>
+
+        <!-- ANGULAR CUSTOM -->
+        <!-- Controllers -->
+        <script src="js/controllers/MainCtrl.js"></script>
+        <script src="js/controllers/HomeCtrl.js"></script>
+        <script src="js/controllers/LoginCtrl.js"></script>
+        <script src="js/controllers/GalleryDSOCtrl.js"></script>
+        <script src="js/controllers/GalleryPlanetaryCtrl.js"></script>
+        <script src="js/controllers/GallerySpecialCtrl.js"></script>
+        <script src="js/controllers/AboutCtrl.js"></script>
+        <script src="js/controllers/WeatherCtrl.js"></script>
+        <script src="js/controllers/BlogCtrl.js"></script>
+        <script src="js/controllers/UploadCtrl.js"></script>
+        <!-- Services -->
+        <script src="js/services/MainService.js"></script>
+        <script src="js/services/LoginService.js"></script>
+        <script src="js/services/GalleryDSOService.js"></script>
+        <script src="js/services/GalleryPlanetaryService.js"></script>
+        <script src="js/services/GallerySpecialService.js"></script>
+        <script src="js/services/AboutService.js"></script>
+        <script src="js/services/WeatherService.js"></script>
+        <script src="js/services/BlogService.js"></script>
+        <script src="js/services/UploadService.js"></script>
+        <!-- App -->
+        <script src="js/appRoutes.js"></script>
+        <script src="js/app.js"></script>
+        <!-- Additional js scripts -->
+        <script src="js/forge.min.js"></script>
+        <script src="js/merge.js"></script>
+    </head>
+    <body ng-app="WebObservatory" ng-controller="MainController">
+        <!-- Page Wrapper -->
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header">
+                <h1><a class="ng-bind: head || item_main[0].name" href="/"></a></h1>
+                <nav>
+                    <p class="open_menu" ng-click="toggle_menu()">Menu</p>
+                </nav>
+            </header>
+
+            <!-- Menu -->
+            <div ng-class="menu_active ? 'is-menu-visible' : ''">
+                <div id="nav_menu">
+                    <div class="inner">
+                        <h2>Menu</h2>
+                        <ul class="links">
+                            <li><a ng-click="toggle_menu()" href="/">Home</a></li>
+                            <li><a ng-click="toggle_menu()" ng-href="{{ gallerydso_url }}" ng-show="item_main[0].toggle[0]">Gallery DSO</a></li>
+                            <li><a ng-click="toggle_menu()" ng-href="{{ galleryplanetary_url }}" ng-show="item_main[0].toggle[1]">Gallery Planetary</a></li>
+                            <li><a ng-click="toggle_menu()" ng-href="{{ galleryspecial_url }}" ng-show="item_main[0].toggle[2]">Gallery Special</a></li>
+                            <li><a ng-click="toggle_menu()" ng-href="{{ about_url }}" ng-show="item_main[0].toggle[3]">About</a></li>
+                            <li><a ng-click="toggle_menu()" ng-href="{{ weather_url }}" ng-show="item_main[0].toggle[4]">Weather</a></li>
+                            <li><a ng-click="toggle_menu()" ng-href="{{ blog_url }}" ng-show="item_main[0].toggle[5]">Blog</a></li>
+                            <li><a ng-click="toggle_menu()" href="/login">Log In</a></li>
+                            <li><a ng-click="toggle_menu(); send_logout()" ng-controller="LoginController" href="javascript:;" ng-show="loggedin">Log out</a></li>
+                        </ul>
+                        <p class="close" ng-click="toggle_menu()">Close</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANGULAR DYNAMIC CONTENT -->
+            <div class="ng-view" autoscroll></div>
+
+            <!-- Footer -->
+            <section id="footer">
+                <div class="inner">
+                    <div ng-if="loggedin">
+                        <h2 id="footer_header" contenteditable="true" class="major ng-bind: item_main[0].footer_header || 'Enter text'"></h2>
+                        <div> 
+                            <div id="footer_text" contenteditable="true" class="ng-bind: item_main[0].footer_text || 'Enter text'"></div>
+                            <br>
+                            <i class="fa fa-times undobutton right tooltip" ng-click="undo_footer_msg();"><span class="tooltiptext">Undo changes</span></i>
+                            <i class="fa fa-check savebutton right tooltip" ng-click="save_footer_msg();"><span class="tooltiptext">Save changes</span></i>
+                            <br><br>
+                        </div>
+                    </div>
+                    <div ng-if="!loggedin">
+                        <h2 id="footer_header" class="major ng-bind: item_main[0].footer_header"></h2>
+                        <p id="footer_text" class="ng-bind: item_main[0].footer_text"></p>
+                    </div>
+                    <form ng-class="loggedin ? 'none' : ''">
+                        <div class="field">
+                            <label for="name">Full name</label>
+                            <input type="text" name="name" id="name" ng-model="name" />
+                        </div>
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <input type="text" name="email" id="email" ng-model="email" />
+                        </div>
+                        <div class="field">
+                            <label for="message">Message</label>
+                            <textarea name="message" id="message" rows="4" ng-model="message"></textarea>
+                        </div>
+                        <ul class="actions">
+                            <li><input type="submit" value="{{ mail_sent != null ? mail_sent : 'Send message' }}" ng-click="send_contact()" /></li>
+                        </ul>
+                    </form>
+                    <ul ng-if="!loggedin" class="contact">
+                        <li class="fa-home">
+                            {{ item_main[0].footer_yourname }}<br />
+                            {{ item_main[0].footer_youradress }}<br />
+                            {{ item_main[0].footer_yourzip }}, {{ item_main[0].footer_yourstate }}<br />
+                            {{ item_main[0].footer_yourcountry }}
+                        </li>
+                        <li ng-if="item_main[0].footer_yourphonearea && item_main[0].footer_yourphone" class="fa-phone">
+                            ({{ item_main[0].footer_yourphonearea }}) {{ item_main[0].footer_yourphone }}
+                        </li>
+                        <li ng-if="item_main[0].footer_youremail" class="fa-envelope">
+                            <a href="{{ 'mailto:' + footer_youremail }}" target="_blanc">{{ item_main[0].footer_youremail }}</a>
+                        </li>
+                        <li ng-if="item_main[0].footer_yourfb" class="fa-facebook">
+                            <a href="{{ 'http://' + item_main[0].footer_yourfb }}" target="_blanc">{{ item_main[0].footer_yourfb }}</a>
+                        </li>
+                        <li ng-if="item_main[0].footer_yourtwitter" class="fa-twitter">
+                            <a href="{{ 'http://' + item_main[0].footer_yourtwitter }}" target="_blanc">{{ item_main[0].footer_yourtwitter }}</a>
+                        </li>
+                        <li ng-if="item_main[0].footer_yourinstagram" class="fa-instagram">
+                            <a href="{{ 'http://' + item_main[0].footer_yourinstagram }}" target="_blanc">{{ item_main[0].footer_yourinstagram }}</a>
+                        </li>
+                        <li ng-if="item_main[0].footer_yourflickr" class="fa-flickr">
+                            <a href="{{ 'http://' + item_main[0].footer_yourflickr }}" target="_blanc">{{ item_main[0].footer_yourflickr }}</a>
+                        </li>
+                        <li ng-if="item_main[0].footer_yourgithub" class="fa-github">
+                            <a href="{{ 'http://' + item_main[0].footer_yourgithub }}" target="_blanc">{{ item_main[0].footer_yourgithub }}</a>
+                        </li>
+                    </ul>
+                    <div ng-if="loggedin" class="contactedit">
+                        <div class="footer_input">
+                            <label class="left" for="yourname">Name:</label>
+                            <p contenteditable="true" id="yourname" class="ng-bind: item_main[0].footer_yourname || 'Name'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="youradress">Adress:</label>
+                            <p contenteditable="true" id="youradress" class="ng-bind: item_main[0].footer_youradress || 'Adress'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourzip">Zip:</label>
+                            <p contenteditable="true" id="yourzip" class="ng-bind: item_main[0].footer_yourzip || 'Zip code'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourstate">State:</label>
+                            <p contenteditable="true" id="yourstate" class="ng-bind: item_main[0].footer_yourstate || 'State'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourcountry">Country:</label>
+                            <p contenteditable="true" id="yourcountry" class="ng-bind: item_main[0].footer_yourcountry || 'Country'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourphonearea">Phone area:</label>
+                            <p contenteditable="true" id="yourphonearea" class="ng-bind: item_main[0].footer_yourphonearea || 'Phone area'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourphone">Phone:</label>
+                            <p contenteditable="true" id="yourphone" class="ng-bind: item_main[0].footer_yourphone || 'Phone'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="youremail">Email:</label>
+                            <p contenteditable="true" id="youremail" class="ng-bind: item_main[0].footer_youremail || 'E-mail'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourfb">Facebook:</label>
+                            <p contenteditable="true" id="yourfb" class="ng-bind: item_main[0].footer_yourfb || 'Facebook'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourtwitter">Twitter:</label>
+                            <p contenteditable="true" id="yourtwitter" class="ng-bind: item_main[0].footer_yourtwitter || 'Twitter'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourinstagram">Instagram:</label>
+                            <p contenteditable="true" id="yourinstagram" class="ng-bind: item_main[0].footer_yourinstagram || 'Instagram'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourflickr">Flickr:</label>
+                            <p contenteditable="true" id="yourflickr" class="ng-bind: item_main[0].footer_yourflickr || 'Flickr'"></p>
+                        </div>
+                        <div class="footer_input">
+                            <label class="left" for="yourgithub">Github:</label>
+                            <p contenteditable="true" id="yourgithub" class="ng-bind: item_main[0].footer_yourgithub || 'Github'"></p>
+                        </div>
+                    </div>
+                    <div ng-if="loggedin">
+                        <i class="fa fa-times undobutton right top-margin tooltip" ng-click="undo_footer();"><span class="tooltiptext">Undo footer</span></i>
+                        <i class="fa fa-check savebutton right inlineicons top-margin tooltip" ng-click="save_footer();"><span class="tooltiptext">Save footer</span></i>
+                    </div>
+                    <div class="copyright center">
+                        <!-- This website is open source and free to use "Read LICENSE.txt", but be kind and do not remove the annotations: 'class="copyright' -->
+                        <li>&copy; Magnus William Eriksen <a href="http://github.com/magnue" target="_blanc">github.com/magnue</a></li>
+                        <li>All rights reserved.</li>
+                        <li>Layout from: <a href="http://html5up.net" target="_blanc">HTML5 UP</a></li>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/skel.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+        <script src="assets/js/main.js"></script>
+
+    </body>
+</html>

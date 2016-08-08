@@ -1,0 +1,185 @@
+<!-- public/views/weather.html -->
+
+<div class="jumbotron text-center">
+    <!-- Wrapper EDITABLE-->
+    <section ng-if="loggedin" id="wrapper">
+        <header>
+		    <div class="inner">
+                <h2> 
+                    <div class="ng-bind: weather_header || 'Enter text'"></div>
+                </h2>
+                <div> 
+                    <p id="weather_sentence" contenteditable="true" class="ng-bind: item_main[0].weather_sentence || 'Enter text'"></p>
+                    <i class="fa fa-check savebutton left tooltip" ng-click="save_sentence_weather()"><span class="tooltiptext">Save changes</span></i>
+                    <i class="fa fa-times undobutton left tooltip" ng-click="undo_sentence_weather()"><span class="tooltiptext">Undo changes</span></i>
+                </div>
+			</div>
+		</header>
+        <!-- Content -->
+        <div ng-class="modal_active ? 'wrapper is-modal-visible' : 'wrapper'">
+            <div id="modal">
+                <div class="inner" ng-controller="UploadController">
+                    <h2>Upload image</h2>
+                    <p>Save image</p>
+                    <input type="file" id="file_large" name="file_large" large-file-upload/>
+                    <br><br>
+                    <p>Save preview (Optional)</p>
+                    <input type="file" id="file_small" name="file_small" small-file-upload/>
+                    <br><br>
+                    <input type="submit" value="Save" ng-click="save_files('article-weather')" />
+                    <input type="submit" value="Cancel" ng-click="toggle_modal(-1, -1)" />
+                </div>
+            </div>
+            <div class="inner">
+                <h2 class="major">
+                    <div id="weather_summary_header" contenteditable="true" class="ng-bind: item_main[0].weather_summary_header || 'Enter text'"></div>
+                </h2>
+                <div> 
+                    <div id="weather_summary_text" contenteditable="true" class="ng-bind: item_main[0].weather_summary_text || 'Enter text'"></div>
+                    <br>
+                    <i class="fa fa-times undobutton right tooltip" ng-click="undo_summary_weather();"><span class="tooltiptext">Undo changes</span></i>
+                    <i class="fa fa-check savebutton right tooltip" ng-click="save_summary_weather();"><span class="tooltiptext">Save changes</span></i>
+                    <br><br>
+                </div>
+
+                <h3 class="major">Clear Outside forcast for {{ item_main[0].lati }} , {{ item_main[0].longd }}</h3>
+                <div>
+                    <div class="weather_inputs">
+                        <label class="left" for="latitude">Latitude:</label>
+                        <input class="weather_inputs clearoutside" type="text" id="latitude" ng-model="item_main[0].lati"></input>
+                    </div>
+                    <div class="weather_inputs">
+                        <label class="left" for="longitude">Longitude:</label>
+                        <input class="weather_inputs clearoutside" type="text" id="longitude" ng-model="item_main[0].longd"></input>
+                    </div>
+                    <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_clearoutside();"><span class="tooltiptext">Save location</span></i>
+                </div>
+                <div class="image fit" style="overflow-x:auto">
+                    <a href="http://clearoutside.com/forecast/{{ item_main[0].lati }}/{{ item_main[0].longd }}" target="_blanc" ><img style="width:850px; height:450px;" src="http://clearoutside.com/forecast_image_large/{{ item_main[0].lati }}/{{ item_main[0].longd }}/forecast.png" /></a>
+                </div>
+                <p>Clear Outside is the goto weather service for astrophotography. Graphing everything from sivil - nautical and astronomical darkness, and helpfull data like dew point.</p>
+                <h3 class="major">YR.no forcast for {{ yr_place_name }}</h3>
+                <label class="left" for="yr_place">Yr place:</label>
+                <input class="weather_inputs yr_place" type="text" id="yr_place" ng-model="item_main[0].yr_place"></input>
+                <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_yr();"><span class="tooltiptext">Save yr place</span></i>
+                <div class="image fit" style="overflow-x:auto">
+                    <iframe class="image fit" src="{{ trustSrc(yr_html_url.src) }}" height="450px" frameborder="0" style="margin: 10px 0 10px 0"></iframe>
+                </div>
+                <p>YR.no is a Norwegian weatherservice used in the local news.</p>
+
+                <div ng-if="item_weather.length == 0">
+                    <i class="fa fa-plus plussbutton right tooltip inlineicons" ng-click="add_article(i)"><span class="tooltiptext">New article</span></i>
+                    <br>
+                </div>
+                <div data-ng-repeat="i in weather_article_range">
+                    <div ng-if="i != 0">
+                        <br><br>
+                    </div>
+                    <h3 class="major"> 
+                        <div ng-attr-id="{{ 'article_header_' + i }}" contenteditable="true" class="ng-bind: item_weather[i].weather_article_header || 'Enter text'"></div>
+                    </h3>
+                    <div data-ng-repeat="j in weather_article_paragraph_range[i]">
+                        <div ng-if="item_weather[i].weather_article_paragraph_image[j] != 'null'">
+                            <div ng-if="item_weather[i].weather_image_left[j]" class="image left">
+                                <img class="hidden" ng-src="{{ item_weather[i].weather_article_paragraph_image[j] }}" alt="" />
+                            
+                                <div ng-class="item_weather[i].weather_toggle_image[j] ? 'imageedit backgroundleft' : 'imageedit blur backgroundleft'"
+                                    style="background-image: url('{{ item_weather[i].weather_article_paragraph_image[j] }}');">
+                                </div>
+
+                                <div class="editbuttons">
+                                    <i class="fa fa-arrow-right toggleleft left tooltip" ng-click="image_toggle_left(i,j)"><span class="tooltiptext">Image right</span></i>
+                                    <i ng-class="item_weather[i].weather_toggle_image[j] ? 'fa fa-toggle-on toggleon left tooltip' : 'fa fa-toggle-off toggleoff left tooltip'"
+                                        ng-click="toggle_image(i,j)"><span class="tooltiptext">Toggle image</span></i>
+                                    <i class="fa fa-plus plusseditbutton left tooltip" ng-click="toggle_modal(i, j)"><span class="tooltiptext">New image</span></i>
+                                    <i class="fa fa-minus minuseditbutton left tooltip" ng-click=""><span class="tooltiptext">Delete image</span></i>
+                                </div>
+                            </div>
+
+                            <div ng-if="!item_weather[i].weather_image_left[j]" class="image right">
+                                <img class="hidden" ng-src="{{ item_weather[i].weather_article_paragraph_image[j] }}" alt="" />
+                            
+                                <div ng-class="item_weather[i].weather_toggle_image[j] ? 'imageedit backgroundright' : 'imageedit blur backgroundright'"
+                                    style="background-image: url('{{ item_weather[i].weather_article_paragraph_image[j] }}');">
+                                </div>
+
+                                <div class="editbuttons">
+                                    <i class="fa fa-arrow-left toggleleft right tooltip" ng-click="image_toggle_left(i,j)"><span class="tooltiptext">Image left</span></i>
+                                    <i ng-class="item_weather[i].weather_toggle_image[j] ? 'fa fa-toggle-on toggleon right tooltip' : 'fa fa-toggle-off toggleoff right tooltip'"
+                                       ng-click="toggle_image(i,j)"><span class="tooltiptext">Toggle image</span></i>
+                                    <i class="fa fa-plus plusseditbutton right tooltip" ng-click="toggle_modal(i, j)"><span class="tooltiptext">New image</span></i>
+                                    <i class="fa fa-minus minuseditbutton right tooltip" ng-click=""><span class="tooltiptext">Delete image</span></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="item_weather[i].weather_article_paragraph_image[j] == 'null'"
+                            ng-class="item_weather[i].weather_image_left[j] ? 'image left' : 'image right'">
+                            <i ng-class="item_weather[i].weather_image_left[j] ? 'fa fa-plus plussbutton left tooltip' : 'fa fa-plus plussbutton right tooltip'"
+                                ng-click="toggle_modal(i, j)">
+                                <span class="tooltiptext">Add image</span>
+                            </i>
+                        </div>
+                        <div ng-attr-id="{{ 'article_paragraph_' + i + '_' + j }}" 
+                                contenteditable="true" class="paragraphmargin ng-bind: item_weather[i].weather_article_paragraph[j] || 'Enter text'">
+                        </div>
+                        <i ng-if="j == weather_article_paragraph_range[i][weather_article_paragraph_range[i].length -1]" 
+                            class="fa fa-plus plussbutton right tooltip"
+                                ng-click="add_paragraph(i, j)">
+                            <span class="tooltiptext">Add paragraph</span>
+                        </i>
+                        <br>
+                    </div>
+                    <i class="fa fa-times undobutton right tooltip" ng-click="undo_article(i)"><span class="tooltiptext">Undo changes</span></i>
+                    <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_article(i)"><span class="tooltiptext">Save changes</span></i>
+                    <i class="fa fa-minus minusbutton right tooltip inlineicons" ng-click="delete_article(i)"><span class="tooltiptext">Delete article</span></i>
+                    <div ng-if="i == weather_article_range[weather_article_range.length - 1]">
+                        <i class="fa fa-plus plussbutton right tooltip inlineicons" ng-click="add_article(i)"><span class="tooltiptext">New article</span></i>
+                    <div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrapper READ ONLY -->
+    <section ng-if="!loggedin" id="wrapper">
+        <header>
+		    <div class="inner">
+                <h2>{{ weather_header }}</h2>
+                <p>{{ item_main[0].weather_sentence }}</p>
+			</div>
+		</header>
+        <!-- Content -->
+        <div class="wrapper">
+            <div class="inner">
+                <h2 class="major">{{ item_main[0].weather_summary_header }}</h2>
+                <p>{{ item_main[0].weather_summary_text }}</p>
+
+                <h3 class="major">Clear Outside forcast for {{ item_main[0].lati }} , {{ item_main[0].longd }}</h3>
+                <div class="image fit" style="overflow-x:auto">
+                    <a href="http://clearoutside.com/forecast/{{ item_main[0].lati }}/{{ item_main[0].longd }}" target="_blanc" ><img style="width:850px; height:450px;" src="http://clearoutside.com/forecast_image_large/{{ item_main[0].lati }}/{{ item_main[0].longd }}/forecast.png" /></a>
+                </div>
+                <p>Clear Outside is the goto weather service for astrophotography. Graphing everything from sivil - nautical and astronomical darkness, and helpfull data like dew point.</p>
+                <h3 class="major">YR.no forcast for {{ yr_place_name }}</h3>
+                <div class="image fit" style="overflow-x:auto">
+                    <iframe class="image fit" src="{{ trustSrc(yr_html_url.src) }}" height="450px" frameborder="0" style="margin: 10px 0 10px 0"></iframe>
+                </div>
+                <p>YR.no is a Norwegian weatherservice used in the local news.</p>
+
+                <div ng-if="weather_article_range.length > 1">
+                    <i ng-if="asc == 'false' || !asc" ng-click="toggle_asc()" class="fa fa-sort-desc savebutton right tooltip"><span class="tooltiptext">Sort new first</span></i>
+                    <i ng-if="asc != 'false' && asc" ng-click="toggle_asc()" class="fa fa-sort-asc savebutton right tooltip"><span class="tooltiptext">Sort new last</span></i>
+                </div>
+                <div data-ng-repeat="i in weather_article_range">
+                    <h3 contenteditable="{{ loggedin ? 'true' : 'false' }}" class="major">{{ item_weather[i].weather_article_header }}</h3>
+                    <div data-ng-repeat="j in weather_article_paragraph_range[i]">
+                        <span ng-if="item_weather[i].weather_toggle_image[j]" ng-class="item_weather[i].weather_image_left[j] ? 'image left' : 'image right'">
+                            <img ng-src="{{ item_weather[i].weather_article_paragraph_image[j] }}" alt="" />
+                        </span>
+                        <p>{{ item_weather[i].weather_article_paragraph[j] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,40 @@
+module.exports = function(app, express, nodemailer) {
+
+    // Setup for SMTP
+    // Setup Mail ==========================================
+    var my_gmail = "youruser@gmail.com";
+    var my_pass = "yourpassword-or-2stagecode";
+
+    var smtpTransport = nodemailer.createTransport('smtps://' + my_gmail + ':' + my_pass + '@smtp.gmail.com');
+
+    // ROUTES FOR OUR Contact form
+    // =============================================================================
+    var router = express.Router();  // get an instance of the express Router
+
+    // routes that ends in contact
+    // =============================================================================
+    router.route('/contact')
+
+
+    .post(function(req, res) {
+        var mailOptions = {
+            to : my_gmail,
+            subject : 'WebObservatory on behaf of ' + req.body.name,
+            text : req.body.message + "\nReply to sender:\t" + req.body.name + "\nWith mail:\t" + req.body.email
+        }
+        console.log(mailOptions);
+        smtpTransport.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error);
+                res.end("error");
+            }else{
+                console.log("Message sent: " + info.response);
+                res.end("sent");
+            }  
+        });
+    });
+    // REGISTER OUR ROUTES -------------------------------
+    // all of our routes will be prefixed with /mail
+    app.use('/mail', router);
+};
+

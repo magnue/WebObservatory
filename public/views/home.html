@@ -1,0 +1,179 @@
+<!-- public/views/home.html -->
+
+<div class="jumbotron text-center">
+    <section id="banner">
+        <div class="inner">
+            <div class="logo"><span class="icon fa-moon-o"></span></div>
+            <div ng-if="!loggedin">
+                <h2 class="ng-bind: item_main[0].header || 'Enter text'"></h2>
+                <p class="ng-bind: item_main[0].tagline || 'Enter text'"></p>
+            </div>
+            <div ng-if="loggedin">
+                <h2 id="main_header" contenteditable="true" class="ng-bind: item_main[0].header || 'Enter text'"></h2>
+                <label class="left" for="sitename">Sitename:</label>
+                <input class="site_input sitename" type="text" id="sitename" ng-model="item_main[0].name"></input>
+                <br><br>
+                <div> 
+                    <p id="main_tagline" contenteditable="true" class="ng-bind: item_main[0].tagline || 'Enter text'"></p>
+                    <br>
+                    <i class="fa fa-times undobutton right tooltip" ng-click="undo_tagline()"><span class="tooltiptext">Undo changes</span></i>
+                    <i class="fa fa-check savebutton right tooltip" ng-click="save_tagline()"><a href="javascript:;"><span class="tooltiptext">Save changes</span></a></i>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrapper -->
+    <div ng-class="modal_active ? 'is-modal-visible' : ''">
+        <div id="modal">
+            <div class="inner" ng-controller="UploadController">
+                <h2>Upload image</h2>
+                <input type="file" id="file_large" name="file_large" large-file-upload />
+                <br><br>
+                <input type="submit" value="Save" ng-click="save_files('user-images')" />
+                <input type="submit" value="Cancel" ng-click="toggle_modal()" />
+            </div>
+        </div>
+    </div>
+    <section id="wrapper">
+        <!-- One -->
+        <section ng-if="item_main[0].toggle[0] || loggedin" class="wrapper spotlight style1">
+            <div class="inner">
+                <div ng-if="loggedin" class="image">
+                    <img src="{{ item_main[0].gallery_dso_img }}" alt="gallery-dso" />
+                    <div class="editbuttons center">
+                        <i class="fa fa-plus plussbutton center tooltip editbuttons" ng-click="save_pages_img(0)" ><span class="tooltiptext">Change picture</span></i>
+                    </div>
+                </div>
+                <a ng-if="!loggedin" href="/gallery-dso" class="image"><img src="{{ item_main[0].gallery_dso_img }}" alt="gallery-dso" /></a>
+                <div class="content">
+                    <h2 class="major">Gallery DSO</h2>
+                    <div ng-if="loggedin">
+                        <p id="pages_text_0" contenteditable="true" class="ng-bind: item_main[0].gallery_dso_text || 'Enter text'"></p>
+                        <i class="fa fa-check savebutton left tooltip inlineicons" ng-click="save_pages(0);"><span class="tooltiptext">Save changes</span></i>
+                        <i ng-class="item_main[0].toggle[0] ? 'fa fa-toggle-on pageon left tooltip' : 'fa fa-toggle-off pageoff left tooltip'"
+                            ng-click="toggle(0)"><span class="tooltiptext">Toggle page</span></i>
+                    </div>
+                    <p ng-if="!loggedin" class="ng-bind: item_main[0].gallery_dso_text || 'Enter text'"></p>
+                    <a href="/gallery-dso" class="special">Enter</a>
+                </div>
+            </div>
+        </section>
+        <!-- Two -->
+        <section ng-if="item_main[0].toggle[1] || loggedin" ng-class="alt[0]">
+            <div class="inner">
+                <div ng-if="loggedin" class="image">
+                    <img src="{{ item_main[0].gallery_planetary_img }}" alt="gallery-planetary" />
+                    <div class="editbuttons center">
+                        <i class="fa fa-plus plussbutton center tooltip editbuttons" ng-click="save_pages_img(1)" ><span class="tooltiptext">Change picture</span></i>
+                    </div>
+                </div>
+                <a ng-if="!loggedin" href="/gallery-planetary" class="image"><img src="{{ item_main[0].gallery_planetary_img }}" alt="gallery-planetary" /></a>
+                <div class="content">
+                    <h2 class="major">Gallery Planetary</h2>
+                    <div ng-if="loggedin">
+                        <p id="pages_text_1" contenteditable="true" class="ng-bind: item_main[0].gallery_planetary_text || 'Enter text'"></p>
+                        <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_pages(1);"><span class="tooltiptext">Save changes</span></i>
+                        <i ng-class="item_main[0].toggle[1] ? 'fa fa-toggle-on pageon right tooltip' : 'fa fa-toggle-off pageoff right tooltip'"
+                            ng-click="toggle(1)"><span class="tooltiptext">Toggle page</span></i>
+                    </div>
+                    <p ng-if="!loggedin" class="ng-bind: item_main[0].gallery_planetary_text || 'Enter text'"></p>
+                    <a href="/gallery-planetary" class="special">Enter</a>
+                </div>
+            </div>
+        </section>
+        <!-- Three -->
+        <section ng-if="item_main[0].toggle[2] || loggedin" ng-class="alt[1]">
+            <div class="inner">
+                <div ng-if="loggedin" class="image">
+                    <img src="{{ item_main[0].gallery_special_img }}" alt="gallery-special" />
+                    <div class="editbuttons center">
+                        <i class="fa fa-plus plussbutton center tooltip editbuttons" ng-click="save_pages_img(2)" ><span class="tooltiptext">Change picture</span></i>
+                    </div>
+                </div>
+                <a ng-if="!loggedin" href="/gallery-special" class="image"><img src="{{ item_main[0].gallery_special_img }}" alt="gallery-special" /></a>
+                <div class="content">
+                    <h2 class="major">Gallery Special</h2>
+                    <div ng-if="loggedin">
+                        <p id="pages_text_2" contenteditable="true" class="ng-bind: item_main[0].gallery_special_text || 'Enter text'"></p>
+                        <i class="fa fa-check savebutton left tooltip inlineicons" ng-click="save_pages(2);"><span class="tooltiptext">Save changes</span></i>
+                        <i ng-class="item_main[0].toggle[2] ? 'fa fa-toggle-on pageon left tooltip' : 'fa fa-toggle-off pageoff left tooltip'"
+                            ng-click="toggle(2)"><span class="tooltiptext">Toggle page</span></i>
+                    </div>
+                    <p ng-if="!loggedin" class="ng-bind: item_main[0].gallery_special_text || 'Enter text'"></p>
+                    <a href="/gallery-special" class="special">Enter</a>
+                </div>
+            </div>
+        </section>
+        <!-- Four -->
+        <section ng-if="item_main[0].toggle[3] || loggedin" ng-class="alt[2]">
+            <div class="inner">
+                <div ng-if="loggedin" class="image">
+                    <img src="{{ item_main[0].about_img }}" alt="about" />
+                    <div class="editbuttons center">
+                        <i class="fa fa-plus plussbutton center tooltip editbuttons" ng-click="save_pages_img(3)" ><span class="tooltiptext">Change picture</span></i>
+                    </div>
+                </div>
+                <a ng-if="!loggedin" href="/about" class="image"><img src="{{ item_main[0].about_img }}" alt="about" /></a>
+                <div class="content">
+                    <h2 class="major ng-bind: about_header"></h2>
+                    <div ng-if="loggedin">
+                        <p id="pages_text_3" contenteditable="true" class="ng-bind: item_main[0].about_text || 'Enter text'"></p>
+                        <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_pages(3);"><span class="tooltiptext">Save changes</span></i>
+                        <i ng-class="item_main[0].toggle[3] ? 'fa fa-toggle-on pageon right tooltip' : 'fa fa-toggle-off pageoff right tooltip'"
+                            ng-click="toggle(3)"><span class="tooltiptext">Toggle page</span></i>
+                    </div>
+                    <p ng-if="!loggedin" class="ng-bind: item_main[0].about_text || 'Enter text'"></p>
+                    <a href="/about" class="special">Enter</a>
+                </div>
+            </div>
+        </section>
+        <!-- five -->
+        <section ng-if="item_main[0].toggle[4] || loggedin" ng-class="alt[3]">
+            <div class="inner">
+                <div ng-if="loggedin" class="image">
+                    <img src="{{ item_main[0].weather_img }}" alt="weather" />
+                    <div class="editbuttons center">
+                        <i class="fa fa-plus plussbutton center tooltip editbuttons" ng-click="save_pages_img(4)" ><span class="tooltiptext">Change picture</span></i>
+                    </div>
+                </div>
+                <a ng-if="!loggedin" href="/weather" class="image"><img src="{{ item_main[0].weather_img }}" alt="weather" /></a>
+                <div class="content">
+                    <h2 class="major ng-bind: weather_header"></h2>
+                    <div ng-if="loggedin">
+                        <p id="pages_text_4" contenteditable="true" class="ng-bind: item_main[0].weather_text || 'Enter text'"></p>
+                        <i class="fa fa-check savebutton left tooltip inlineicons" ng-click="save_pages(4);"><span class="tooltiptext">Save changes</span></i>
+                        <i ng-class="item_main[0].toggle[4] ? 'fa fa-toggle-on pageon left tooltip' : 'fa fa-toggle-off pageoff left tooltip'"
+                            ng-click="toggle(4)"><span class="tooltiptext">Toggle page</span></i>
+                    </div>
+                    <p ng-if="!loggedin" class="ng-bind: item_main[0].weather_text || 'Enter text'"></p>
+                    <a href="/weather" class="special">Enter</a>
+                </div>
+            </div>
+        </section>
+        <!-- six -->
+        <section ng-if="item_main[0].toggle[5] || loggedin" ng-class="alt[4]">
+            <div class="inner">
+                <div ng-if="loggedin" class="image">
+                    <img src="{{ item_main[0].blog_img }}" alt="blog" />
+                    <div class="editbuttons center">
+                        <i class="fa fa-plus plussbutton center tooltip editbuttons" ng-click="save_pages_img(5)" ><span class="tooltiptext">Change picture</span></i>
+                    </div>
+                </div>
+                <a ng-if="!loggedin" href="/blog" class="image"><img src="{{ item_main[0].blog_img }}" alt="blog" /></a>
+                <div class="content">
+                    <h2 class="major ng-bind: blog_header"></h2>
+                    <div ng-if="loggedin">
+                        <p id="pages_text_5" contenteditable="true" class="ng-bind: item_main[0].blog_text || 'Enter text'"></p>
+                        <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_pages(5);"><span class="tooltiptext">Save changes</span></i>
+                        <i ng-class="item_main[0].toggle[5] ? 'fa fa-toggle-on pageon right tooltip' : 'fa fa-toggle-off pageoff right tooltip'"
+                            ng-click="toggle(5)"><span class="tooltiptext">Toggle page</span></i>
+                    </div>
+                    <p ng-if="!loggedin" class="ng-bind: item_main[0].blog_text || 'Enter text'"></p>
+                    <a href="/blog" class="special">Enter</a>
+                </div>
+            </div>
+        </section>
+    </section>
+</div>

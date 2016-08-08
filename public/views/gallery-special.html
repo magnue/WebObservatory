@@ -1,0 +1,130 @@
+<!-- public/views/gallery-special.html -->
+
+<div class="jumbotron text-center">
+
+    <!-- Wrapper EDITABLE -->
+    <section ng-if="loggedin" id="wrapper">
+        <header>
+		    <div class="inner">
+                <h2>Gallery Special</h2>
+                <div>
+                    <p id="special_sentence" contenteditable="true" class="ng-bind: item_main[0].special_sentence || 'Enter text'"></p>
+                    <i class="fa fa-check savebutton left tooltip" ng-click="save_sentence_special()"><span class="tooltiptext">Save changes</span></i>
+                    <i class="fa fa-times undobutton left tooltip" ng-click="undo_sentence_special()"><span class="tooltiptext">Undo changes</span></i>
+                </div>
+			</div>
+		</header>
+        <!-- Content -->
+        <div ng-class="modal_active ? 'wrapper is-modal-visible' : 'wrapper'">
+            <div id="modal">
+                <div class="inner" ng-controller="UploadController">
+                    <h2>Upload image</h2>
+                    <p>Save image</p>
+                    <input type="file" id="file_large" name="file_large" large-file-upload/>
+                    <br><br>
+                    <p>Save preview (Optional)</p>
+                    <input type="file" id="file_small" name="file_small" small-file-upload/>
+                    <br><br>
+                    <input type="submit" value="Save" ng-click="save_files('gallery-special')" />
+                    <input type="submit" value="Cancel" ng-click="toggle_modal(-1)" />
+                </div>
+            </div>
+            <div class="inner">
+
+                <h2 class="major">
+                    <div id="special_summary_header" contenteditable="true" class="ng-bind: item_main[0].special_summary_header || 'Enter text'"></div>
+                </h2>
+                <div> 
+                    <div id="special_summary_text" contenteditable="true" class="ng-bind: item_main[0].special_summary_text || 'Enter text'"></div>
+                    <br>
+                    <i class="fa fa-times undobutton right tooltip" ng-click="undo_summary_special();"><span class="tooltiptext">Undo changes</span></i>
+                    <i class="fa fa-check savebutton right tooltip" ng-click="save_summary_special();"><span class="tooltiptext">Save changes</span></i>
+                    <br><br>
+                </div>
+                <div ng-if="item_special.length == 0">
+                    <i class="fa fa-plus plussbutton right tooltip inlineicons" ng-click="add_special(i)"><span class="tooltiptext">New article</span></i>
+                    <br>
+                </div>
+                <section class="features">
+                    <article data-ng-repeat="i in special_range">
+                        <div ng-if="item_special[i].image_special_url != 'null'" class="image">
+                            <img class="hidden" ng-src="{{ item_special[i].image_special_preview_url }}" alt="" />
+                            <div class="imageedit backgroundleft'"
+                                style="background-image: url('{{ item_special[i].image_special_preview_url }}');">
+                            </div>                                
+                            <div class="editbuttons">
+                                <i class="fa fa-plus plusseditbutton left tooltip" ng-click="toggle_modal(i)"><span class="tooltiptext">New image</span></i>
+                                <i class="fa fa-minus minuseditbutton left tooltip" ng-click=""><span class="tooltiptext">Delete image</span></i>
+                            </div>
+                        </div>
+                        <div ng-if="item_special[i].image_special_url == 'null'">
+                            <i class="fa fa-plus plussbutton tooltip" ng-click="toggle_modal(i)">
+                                <span class="tooltiptext">Add image</span>
+                            </i>
+                        </div>
+                        <h3 class="major"> 
+                            <div ng-attr-id="{{ 'special_name_' + i }}" contenteditable="true" class="ng-bind: item_special[i].image_special_name || 'Enter text'"></div>
+                        </h3>
+                        <p ng-attr-id="{{ 'special_summary_' + i }}" contenteditable="true" class="ng-bind: item_special[i].image_special_summary || 'Enter text'"></p>
+                        <p>Read on...</p>
+                        <div data-ng-repeat="j in special_paragraph_range[i]">
+                            <div ng-attr-id="{{ 'special_paragraph_' + i + '_' + j }}" 
+                                contenteditable="true" class="paragraphmargin ng-bind: item_special[i].image_special_article[j] || 'Enter text'">
+                            </div>
+                            <i ng-if="j == special_paragraph_range[i][special_paragraph_range[i].length -1]" 
+                                class="fa fa-plus plussbutton right tooltip" ng-click="add_paragraph(i, j)">
+                                <span class="tooltiptext">Add paragraph</span>
+                            </i>
+                            <br>
+                        </div>
+                        <div class="margintop">
+                            <i class="fa fa-times undobutton right tooltip" ng-click="undo_special(i)"><span class="tooltiptext">Undo changes</span></i>
+                            <i class="fa fa-check savebutton right tooltip inlineicons" ng-click="save_special(i)"><span class="tooltiptext">Save changes</span></i>
+                            <i class="fa fa-minus minusbutton right tooltip inlineicons" ng-click="delete_special(i)"><span class="tooltiptext">Delete article</span></i>
+                            <div ng-if="i == special_range[special_range.length - 1]">
+                                <i class="fa fa-plus plussbutton right tooltip inlineicons" ng-click="add_special(i)"><span class="tooltiptext">New article</span></i>
+                            </div>
+                            <br>
+                        <div>
+                    </article>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrapper READ ONLY -->
+    <section ng-if="!loggedin" id="wrapper">
+        <header>
+		    <div class="inner">
+                <h2>Gallery Special</h2>
+                <p>{{ item_main[0].special_sentence }}</p>
+			</div>
+		</header>
+        <!-- Content -->
+        <div class="wrapper">
+            <div class="inner">
+
+                <h2 class="major">{{ item_main[0].special_summary_header }}</h2>
+                <p>{{ item_main[0].special_summary_text }}</p>
+                <div ng-if="special_range.length > 1">
+                    <i ng-if="asc == 'false' || !asc" ng-click="toggle_asc()" class="fa fa-sort-desc savebutton right tooltip"><span class="tooltiptext">Sort new first</span></i>
+                    <i ng-if="asc != 'false' && asc" ng-click="toggle_asc()" class="fa fa-sort-asc savebutton right tooltip"><span class="tooltiptext">Sort new last</span></i>
+                </div>
+                <br><br>
+                <section class="features">
+                    <article data-ng-repeat="i in special_range">
+                        <a href="{{ item_special[i].image_special_url }}" target="_blank" class="image"><img src="{{ item_special[i].image_special_preview_url }}" alt="" /></a>
+                        <h3 class="major">{{ item_special[i].image_special_name }}</h3>
+                        <p>{{ item_special[i].image_special_summary }}</p>
+                        <a href ng-click="expand = !expand" class="special">Read on</a>
+                        <div ng-show="expand">
+                            <p data-ng-repeat="j in special_paragraph_range[i]">
+                                {{ item_special[i].image_special_article[j] }}
+                            </p>
+                        </div>
+                    </article>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
