@@ -28,6 +28,12 @@ module.exports = {
             loggedin.loggedin_user_sha256_salted_password = login_user_sha256_salted_password;
             loggedin.loggedin_user_sha256_salt = login_user_sha256_salt;
             
+            // create random salt
+            var sha256  = Forge.md.sha256.create();
+            var buf     = Forge.random.getBytesSync(256);
+            sha256.update(buf);
+            loggedin.loggedin_user_random_sha256_salt = sha256.digest().toHex();
+            
             loggedin.save()
             .then(function(loggedin) {
                 res_json = ({

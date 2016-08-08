@@ -26,13 +26,23 @@ module.exports = function(app, express) {
             var login = new Login();
             login.login_user_email = req.body.login_user_email;
 
+            // hash email
             var sha256 = Forge.md.sha256.create(); 
             sha256.update(req.body.login_user_email);
             var sha256_email = sha256.digest().toHex();
+            
+            // hash salt
+            sha256 = Forge.md.sha256.create();
+            var buf = Forge.random.getBytesSync(256);
+            sha256.update(buf);
+            login.login_user_sha256_salt = sha256.digest().toHex();
+
+            // hash salted email
             sha256 = Forge.md.sha256.create();
             sha256.update(sha256_email + login.login_user_sha256_salt);
             login.login_user_sha256_salted_email = sha256.digest().toHex();
 
+            // hash salted password
             sha256 = Forge.md.sha256.create(); 
             sha256.update(req.body.login_user_sha256_password + login.login_user_sha256_salt);
             login.login_user_sha256_salted_password = sha256.digest().toHex();
