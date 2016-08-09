@@ -2,6 +2,8 @@
 
 #### Summary
 [Screencast Webobservatory (full video ~ 8 min 30 sec)](https://youtu.be/2s6tHyAz6p0)
+
+<br>
 [Screencast Webobservatory (part two 'editing' ~ 5 min)](https://youtu.be/2s6tHyAz6p0?t=3m31s)
 
 <br>
