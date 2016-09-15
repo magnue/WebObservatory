@@ -4,6 +4,13 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, L
     $scope.test = $scope.user + ' Logged in';
     $scope.user = localStorage.getItem('user');
 
+    try {
+        ga('set', 'page', '/login');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     $scope.send_signup = function() {
         if (!Login.checkPwd($scope.password) || !Login.checkMail($scope.email))
             return;

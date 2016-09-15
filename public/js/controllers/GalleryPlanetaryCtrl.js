@@ -5,6 +5,13 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
     $scope.planetary_range = [];
     $scope.planetary_paragraph_range = [];
     
+    try {
+        ga('set', 'page', '/gallery-planetary');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     GalleryPlanetary.get().success(function(item)
     {
         $scope.item_planetary = item;

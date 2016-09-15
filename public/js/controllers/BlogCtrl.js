@@ -4,6 +4,13 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, Blo
     $scope.item_blog = [];
     $scope.asc = localStorage.getItem('asc');
 
+    try {
+        ga('set', 'page', '/blog');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     Blog.get().success(function(item)
     {
         $scope.item_blog = item;

@@ -4,6 +4,13 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, A
     $scope.item_about = [];
     $scope.asc = localStorage.getItem('asc');
 
+    try {
+        ga('set', 'page', '/about');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+    
     About.get().success(function(item)
     {
         $scope.item_about = item;

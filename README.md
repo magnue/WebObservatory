@@ -29,8 +29,8 @@ cd ~/Projects
 git clone https://github.com/magnue/webobservatory.git
 cd webobservatory
 
-# Do NOT use 'sudo ./install' You will be prompted for password when it's needed
-./install
+# Do NOT use 'sudo ./install.sh' You will be prompted for password when it's needed
+./install.sh
 ```
 
 <br>
@@ -96,3 +96,12 @@ db.logins.remove({login_user_email : "user@webobservatory.test});
 ```
 One more reason not to use the default user is that "author" is saved to the db when creating and editing atricles, and gallery entries.
 If you use the default user, all articles will display Created by: user, Last edited by: user, aso, when the frontend for authors is implemented.
+
+<br>
+#### Add Google Analytics (this is strictly optional).
+Rename public/js/analytics.default, and add your tracking id.
+```
+cd ~/Projects/webobservatory/public/js/
+cp analytics.default analytics.js
+vi analytics.js
+```

@@ -5,6 +5,13 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
     $scope.dso_range = [];
     $scope.dso_paragraph_range = [];
     
+    try {
+        ga('set', 'page', '/gallery-dso');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     GalleryDSO.get().success(function(item)
     {
         $scope.item_dso = item;

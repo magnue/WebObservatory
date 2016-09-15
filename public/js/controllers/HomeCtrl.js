@@ -1,6 +1,13 @@
 // public/js/controllers/HomeCtrl.js
 angular.module('HomeCtrl', []).controller('HomeController', function($scope, Main) {
 
+    try {
+        ga('set', 'page', '/');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     $scope.undo_tagline = function() {
         Main.get().success(function(item) {
             $scope.item_main[0].header = item[0].header;

@@ -5,6 +5,13 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
     $scope.special_range = [];
     $scope.special_paragraph_range = [];
     
+    try {
+        ga('set', 'page', '/gallery-special');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     GallerySpecial.get().success(function(item)
     {
         $scope.item_special = item;

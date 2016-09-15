@@ -5,6 +5,13 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
         return $sce.trustAsResourceUrl(src);
     };
 
+    try {
+        ga('set', 'page', '/weather');
+        ga('send', 'pageview');
+    } catch (err) {
+        ; // nothing to do here, simply means analytics.js is not in use
+    }
+
     $scope.item_weather = [];
     $scope.asc = localStorage.getItem('asc');
 
