@@ -25,6 +25,11 @@ angular.module('UploadService', []).factory('Upload', function($http, Login) {
                             , largefilename: res.largefilename
                             , smallfilename: res.smallfilename });
                 
+                if (!res.result) {
+                    window.alert(res.message);
+                    return;
+                }
+
                 Login.update(scope, json, '/api/upload/')
                 .success(function(encrypted_item) {
                     var auth_item;

@@ -1,0 +1,83 @@
+<!-- public/image-view.html-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="/">
+        <meta name="robots" content="none">
+        <title>WebObservatory - Image view</title>
+        <style>body {
+            margin:0;
+        }
+        .fit {
+            width:100;
+            height:100%;
+            position:absolute;
+            left:0px;
+            right:0px;
+            z-index:0;
+            margin:0;
+            background-color:#2e3141;
+        } 
+        .align {
+            width:auto;
+            height:100%;
+            position:relative;
+            display:block;
+            margin-right:auto;
+            margin-left:auto;
+            margin-top:0;
+            margin-bottom:0;
+            top:0;
+        }
+        @media (orientation: portrait) {
+            .align {
+                width:100%;
+                height:auto;
+                top:50%;
+                transform: translateY(-50%);
+                -webkit-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                margin-right:0;
+                margin-left:0;
+                margin-top:auto;
+                margin-bottom:auto;
+            }
+        }</style>
+
+        <!-- ANGULAR CUSTOM -->
+        <!-- Application -->
+        <script src="libs/angular/angular.min.js"></script>
+        <script src="libs/angular-route/angular-route.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/appRoutes.js"></script>
+        <!-- Controllers -->
+        <script src="js/controllers/MainCtrl.js"></script>
+        <script src="js/controllers/HomeCtrl.js"></script>
+        <script src="js/controllers/LoginCtrl.js"></script>
+        <script src="js/controllers/GalleryDSOCtrl.js"></script>
+        <script src="js/controllers/GalleryPlanetaryCtrl.js"></script>
+        <script src="js/controllers/GallerySpecialCtrl.js"></script>
+        <script src="js/controllers/AboutCtrl.js"></script>
+        <script src="js/controllers/WeatherCtrl.js"></script>
+        <script src="js/controllers/BlogCtrl.js"></script>
+        <script src="js/controllers/UploadCtrl.js"></script>
+        <script src="js/controllers/ImageViewCtrl.js"></script>
+        <!-- Services -->
+        <script src="js/services/MainService.js"></script>
+        <script src="js/services/LoginService.js"></script>
+        <script src="js/services/GalleryDSOService.js"></script>
+        <script src="js/services/GalleryPlanetaryService.js"></script>
+        <script src="js/services/GallerySpecialService.js"></script>
+        <script src="js/services/AboutService.js"></script>
+        <script src="js/services/WeatherService.js"></script>
+        <script src="js/services/BlogService.js"></script>
+        <script src="js/services/UploadService.js"></script>
+        <!-- JS -->
+        <script src="js/analytics.js"></script>
+    </head>
+    <body ng-app="WebObservatory" ng-controller="ImageViewController">
+        <div class="fit">
+            <img class="align" ng-src="{{ image }}"/>
+        </div>
+    </body>
+</html>

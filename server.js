@@ -106,6 +106,10 @@ app.get('/login', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/image-view', function(req, res) {
+    res.sendFile(__dirname + '/public/image-view.html');
+});
+
 app.get('*', function(req, res) {
     res.sendFile(__dirname + '/public/404.html');
 });

@@ -14,9 +14,13 @@
                 </div>
 			</div>
 		</header>
+
         <!-- Content -->
-        <div ng-class="modal_active ? 'wrapper is-modal-visible' : 'wrapper'">
-            <div id="modal">
+        <div  ng-class="modal_active ? 'wrapper is-modal-visible' : 'wrapper'">
+            <!-- Upload modal -->
+            <!--googleoff: all-->
+            <!--noindex-->
+            <div id="modal" class="robots-nocontent">
                 <div class="inner" ng-controller="UploadController">
                     <h2>Upload image</h2>
                     <p>Save image</p>
@@ -29,6 +33,9 @@
                     <input type="submit" value="Cancel" ng-click="toggle_modal(-1)" />
                 </div>
             </div>
+            <!--googleon: all-->
+            <!--/noindex-->
+
             <div class="inner">
 
                 <h2 class="major">
@@ -46,7 +53,7 @@
                     <br>
                 </div>
                 <section class="features">
-                    <article data-ng-repeat="i in special_range">
+                    <article data-ng-repeat="i in special_range" class="relative">
                         <div ng-if="item_special[i].image_special_url != 'null'" class="image">
                             <img class="hidden" ng-src="{{ item_special[i].image_special_preview_url }}" alt="" />
                             <div class="imageedit backgroundleft'"
@@ -86,6 +93,20 @@
                             </div>
                             <br>
                         <div>
+                        <br ng-if="item_special[i].image_special_created_by"/>
+                        <br ng-if="item_special[i].image_special_edited_by"/>
+                        <div class="edit-info">
+                            <i ng-if="item_special[i].image_special_created_by" class="fa fa-pencil">
+                                <span class="italic-raleway">
+                                    {{ ' ' + item_special[i].image_special_created_by + ' ' + (item_special[i].image_special_created_date | date:'MM/dd/yyyy - HH:mm') }}
+                                </span>
+                            </i>
+                            <i ng-if="item_special[i].image_special_edited_by" class="fa fa-floppy-o">
+                                <span class="italic-raleway">
+                                    {{ ' ' + item_special[i].image_special_edited_by + ' ' + (item_special[i].image_special_edited_date | date:'MM/dd/yyyy - HH:mm') }}
+                                </span>
+                            </i>
+                        </div>
                     </article>
                 </section>
             </div>
@@ -112,8 +133,8 @@
                 </div>
                 <br><br>
                 <section class="features">
-                    <article data-ng-repeat="i in special_range">
-                        <a href="{{ item_special[i].image_special_url }}" target="_blank" class="image"><img src="{{ item_special[i].image_special_preview_url }}" alt="" /></a>
+                    <article data-ng-repeat="i in special_range" class="relative">
+                        <a href="{{ '/image-view?' + item_special[i].image_special_url }}" target="_blank" class="image"><img src="{{ item_special[i].image_special_preview_url }}" alt="" /></a>
                         <h3 class="major">{{ item_special[i].image_special_name }}</h3>
                         <p>{{ item_special[i].image_special_summary }}</p>
                         <a href ng-click="expand = !expand" class="special">Read on</a>
@@ -121,6 +142,20 @@
                             <p data-ng-repeat="j in special_paragraph_range[i]">
                                 {{ item_special[i].image_special_article[j] }}
                             </p>
+                        </div>
+                        <br ng-if="item_special[i].image_special_created_by"/>
+                        <br ng-if="item_special[i].image_special_edited_by"/>
+                        <div class="edit-info">
+                            <i ng-if="item_special[i].image_special_created_by" class="fa fa-pencil">
+                                <span class="italic-raleway">
+                                    {{ ' ' + item_special[i].image_special_created_by + ' ' + (item_special[i].image_special_created_date | date:'MM/dd/yyyy - HH:mm') }}
+                                </span>
+                            </i>
+                            <i ng-if="item_special[i].image_special_edited_by" class="fa fa-floppy-o">
+                                <span class="italic-raleway">
+                                    {{ ' ' + item_special[i].image_special_edited_by + ' ' + (item_special[i].image_special_edited_date | date:'MM/dd/yyyy - HH:mm') }}
+                                </span>
+                            </i>
                         </div>
                     </article>
                 </section>

@@ -28,6 +28,7 @@
         <script src="js/controllers/WeatherCtrl.js"></script>
         <script src="js/controllers/BlogCtrl.js"></script>
         <script src="js/controllers/UploadCtrl.js"></script>
+        <script src="js/controllers/ImageViewCtrl.js"></script>
         <!-- Services -->
         <script src="js/services/MainService.js"></script>
         <script src="js/services/LoginService.js"></script>
@@ -44,6 +45,7 @@
         <!-- Additional js scripts -->
         <script src="js/forge.min.js"></script>
         <script src="js/merge.js"></script>
+        <script src="js/analytics.js"></script>
     </head>
     <body ng-app="WebObservatory" ng-controller="MainController">
         <!-- Page Wrapper -->
@@ -58,7 +60,9 @@
             </header>
 
             <!-- Menu -->
-            <div ng-class="menu_active ? 'is-menu-visible' : ''">
+            <!--googleoff: all-->
+            <!--noindex-->
+            <div class="robots-nocontent" ng-class="menu_active ? 'is-menu-visible' : ''">
                 <div id="nav_menu">
                     <div class="inner">
                         <h2>Menu</h2>
@@ -77,6 +81,8 @@
                     </div>
                 </div>
             </div>
+            <!--googleon: all-->
+            <!--/noindex-->
 
             <!-- ANGULAR DYNAMIC CONTENT -->
             <div class="ng-view" autoscroll></div>

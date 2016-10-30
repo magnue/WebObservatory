@@ -113,8 +113,8 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
     $scope.add_planetary = function(i) {
         var default_json = ({_id                    : null
                             , image_planetary_name        : 'The moon from Galileo'
-                            , image_planetary_url         : 'images/default-gallery-planetary-article.jpg'
-                            , image_planetary_preview_url : 'images/default-gallery-planetary-article-small.jpg'
+                            , image_planetary_url         : 'images/largeFile-default-gallery-planetary-article.jpg'
+                            , image_planetary_preview_url : 'images/smallFile-default-gallery-planetary-article-small.jpg'
                             , image_planetary_summary     : 'This is where you summarize your image'
                             , image_planetary_article     : ['Some info first.. With this responsive design, it would be good practice to keep all your preview images the same height and width. This preview is 505x505px, and will display nicely on all devices. If you use a CCD a 1x1 crop would work well, or you can use a 4:3 crop for DSLR on your previews.']});
 

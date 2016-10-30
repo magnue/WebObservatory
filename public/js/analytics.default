@@ -4,7 +4,6 @@
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'YOUR-ID', 'auto');
-ga('send', 'pageview');
 
 // Change YOUR-ID to tracking id provided by google so it looks like
 // ga('create', 'UA-XXXXXXXX-X', 'auto');

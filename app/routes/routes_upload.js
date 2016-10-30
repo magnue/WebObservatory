@@ -17,10 +17,17 @@ var fs              = require('fs');
         upload(req, res, function(err) {
             var largename = typeof req.files['largeFile'] == 'undefined' ? null : req.files['largeFile'][0].filename;
             var smallname = typeof req.files['smallFile'] == 'undefined' ? null : req.files['smallFile'][0].filename;
-            res.json({result: true
+            if (!err)
+                res.json({result: true
                     , message: 'successfully uploaded image to tmp'
                     , largefilename: largename
                     , smallfilename: smallname});
+            else
+                res.json({result: false
+                    , message: 'error when uploading image to tmp'
+                        + (JSON.stringify(err).search('EACCES') != -1
+                        ? ': directory access error'
+                        : ': unknown error')});
         })
     })
 

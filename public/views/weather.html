@@ -134,7 +134,20 @@
                     <i class="fa fa-minus minusbutton right tooltip inlineicons" ng-click="delete_article(i)"><span class="tooltiptext">Delete article</span></i>
                     <div ng-if="i == weather_article_range[weather_article_range.length - 1]">
                         <i class="fa fa-plus plussbutton right tooltip inlineicons" ng-click="add_article(i)"><span class="tooltiptext">New article</span></i>
-                    <div>
+                    </div>
+                    <div class="edit-info-margin">
+                        <i ng-if="item_weather[i].weather_created_by" class="fa fa-pencil">
+                            <span class="italic-raleway">
+                                {{ ' ' + item_weather[i].weather_created_by + ' ' + (item_weather[i].weather_created_date | date:'MM/dd/yyyy - HH:mm') }}
+                            </span>
+                        </i>
+                        <br/>
+                        <i ng-if="item_weather[i].weather_edited_by" class="fa fa-floppy-o">
+                            <span class="italic-raleway">
+                                {{ ' ' + item_weather[i].weather_edited_by + ' ' + (item_weather[i].weather_edited_date | date:'MM/dd/yyyy - HH:mm') }}
+                            </span>
+                        </i>
+                    </div>
                     <br>
                 </div>
             </div>
@@ -176,7 +189,20 @@
                         <span ng-if="item_weather[i].weather_toggle_image[j]" ng-class="item_weather[i].weather_image_left[j] ? 'image left' : 'image right'">
                             <img ng-src="{{ item_weather[i].weather_article_paragraph_image[j] }}" alt="" />
                         </span>
-                        <p>{{ item_weather[i].weather_article_paragraph[j] }}</p>
+                        <p style="{{ j == item_weather[i].weather_article_paragraph.length -1 ? 'margin: 0 0 0.5em 0;' : 'margin: 0 0 2em 0;' }}">{{ item_weather[i].weather_article_paragraph[j] }}</p>
+                    </div>
+                    <div class="edit-info-margin">
+                        <i ng-if="item_weather[i].weather_created_by" class="fa fa-pencil">
+                            <span class="italic-raleway">
+                                {{ ' ' + item_weather[i].weather_created_by + ' ' + (item_weather[i].weather_created_date | date:'MM/dd/yyyy - HH:mm') }}
+                            </span>
+                        </i>
+                        <br/>
+                        <i ng-if="item_weather[i].weather_edited_by" class="fa fa-floppy-o">
+                            <span class="italic-raleway">
+                                {{ ' ' + item_weather[i].weather_edited_by + ' ' + (item_weather[i].weather_edited_date | date:'MM/dd/yyyy - HH:mm') }}
+                            </span>
+                        </i>
                     </div>
                 </div>
             </div>

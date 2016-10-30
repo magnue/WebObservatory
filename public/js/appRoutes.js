@@ -49,6 +49,12 @@
         .when('/login', {
             templateUrl: 'views/login.html',
             controller: 'LoginController'
+        })
+
+        // ImageView page
+        .when('/image-view', {
+            templateUrl: 'image-view.html',
+            controller: 'ImageViewController'
         });
 
     $locationProvider.html5Mode(true);

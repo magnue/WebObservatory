@@ -9,4 +9,5 @@ angular.module('WebObservatory', ['ngRoute', 'appRoutes'
     , 'AboutCtrl', 'AboutService'
     , 'WeatherCtrl', 'WeatherService'
     , 'BlogCtrl', 'BlogService'
-    , 'UploadCtrl', 'UploadService']);
+    , 'UploadCtrl', 'UploadService'
+    , 'ImageViewCtrl',]);

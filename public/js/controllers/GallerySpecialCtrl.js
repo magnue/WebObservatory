@@ -113,8 +113,8 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
     $scope.add_special = function(i) {
         var default_json = ({_id                    : null
                             , image_special_name        : 'Comet C/2012 F6 (Lemmon)'
-                            , image_special_url         : 'images/default-gallery-special-article.jpg'
-                            , image_special_preview_url : 'images/default-gallery-special-article-small.jpg'
+                            , image_special_url         : 'images/largeFile-default-gallery-special-article.jpg'
+                            , image_special_preview_url : 'images/smallFile-default-gallery-special-article-small.jpg'
                             , image_special_summary     : 'This is where you summarize your image'
                             , image_special_article     : ['Some info first.. With this responsive design, it would be good practice to keep all your preview images the same height and width. This preview is 505x505px, and will display nicely on all devices. If you use a CCD a 1x1 crop would work well, or you can use a 4:3 crop for DSLR on your previews.']});
 

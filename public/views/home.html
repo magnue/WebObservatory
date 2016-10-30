@@ -24,8 +24,10 @@
         </div>
     </section>
 
-    <!-- Wrapper -->
-    <div ng-class="modal_active ? 'is-modal-visible' : ''">
+    <!-- Upload modal -->
+    <!--googleoff: all-->
+    <!--noindex-->
+    <div class="robots-nocontent" ng-class="modal_active ? 'is-modal-visible' : ''">
         <div id="modal">
             <div class="inner" ng-controller="UploadController">
                 <h2>Upload image</h2>
@@ -36,6 +38,10 @@
             </div>
         </div>
     </div>
+    <!--googleon: all-->
+    <!--/noindex-->
+
+    <!-- Wrapper -->
     <section id="wrapper">
         <!-- One -->
         <section ng-if="item_main[0].toggle[0] || loggedin" class="wrapper spotlight style1">
