@@ -1,5 +1,7 @@
 // public/js/controllers/GallerySpecialCtrl.js
-angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', function($scope, GallerySpecial, Main) {
+angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', function($scope, $window, GallerySpecial, Main) {
+
+    $window.document.title = 'Gallery Special - ' + $scope.item_main[0].name;
 
     $scope.item_special = [];
     $scope.special_range = [];

@@ -1,5 +1,7 @@
 // public/js/controllers/WeatherCtrl.js
-angular.module('WeatherCtrl', []).controller('WeatherController', function($scope, $sce, Weather, Main) {
+angular.module('WeatherCtrl', []).controller('WeatherController', function($scope, $sce, $window, Weather, Main) {
+
+    $window.document.title = 'Weather - ' + $scope.item_main[0].name;
 
     $scope.trustSrc = function(src) {
         return $sce.trustAsResourceUrl(src);

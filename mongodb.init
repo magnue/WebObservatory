@@ -1,0 +1,53 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          mongodb
+# Required-Start:    $local_fs $network $named $time $syslog
+# Required-Stop:     $local_fs $network $named $time $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Description:       init.d script for mongodb
+### END INIT INFO
+
+EXEC="su -s /bin/bash -c"
+SCRIPT="/usr/bin/mongod --quiet --config /etc/mongod.conf"
+USER="mongodb"
+
+PIDFILE=/var/run/mongodb.pid
+LOGFILE=/var/log/mongodb.log
+
+start() {
+  echo 'Starting service…' >&2
+  $EXEC "$SCRIPT" $USER
+  echo 'Service started' >&2
+}
+
+stop() {
+  echo 'Stopping service…' >&2
+  killall -9 mongod
+  echo 'Service stopped' >&2
+}
+
+status() {
+  echo 'Staus mongo service pid file...' >&2
+  cat $PIDFILE
+  echo 'Done' >&2
+}
+
+case "$1" in
+  start)
+    stop
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|restart}"
+esac

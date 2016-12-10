@@ -1,5 +1,7 @@
 // public/js/controllers/GalleryPlanetaryCtrl.js
-angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryController', function($scope, GalleryPlanetary, Main) {
+angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryController', function($scope, $window, GalleryPlanetary, Main) {
+
+    $window.document.title = 'Gallery Planetary - ' + $scope.item_main[0].name;
 
     $scope.item_planetary = [];
     $scope.planetary_range = [];

@@ -1,5 +1,7 @@
 // public/js/controllers/AboutCtrl.js
-angular.module('AboutCtrl', []).controller('AboutController', function($scope, About, Main) {
+angular.module('AboutCtrl', []).controller('AboutController', function($scope, $window, About, Main) {
+
+    $window.document.title = 'About - ' + $scope.item_main[0].name;
 
     $scope.item_about = [];
     $scope.asc = localStorage.getItem('asc');

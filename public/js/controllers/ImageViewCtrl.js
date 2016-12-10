@@ -1,6 +1,8 @@
 // public/js/controllers/ImageViewCtrl.js
-angular.module('ImageViewCtrl', []).controller('ImageViewController', function($scope, $location) {
+angular.module('ImageViewCtrl', []).controller('ImageViewController', function($scope, $window, $location) {
     
+    $window.document.title = 'Image view - ' + localStorage.getItem('sitename');
+
     // Initiate the image name string
     $scope.image = '';
 
@@ -18,14 +20,12 @@ angular.module('ImageViewCtrl', []).controller('ImageViewController', function($
         if(key) {
             var noExtern = item.replace(/http/g, '');
             $scope.image = noExtern;
-            console.log('QUERYSTRING: item ' + item + ' noExtern ' + noExtern); // TODO remove
         }
     });
 
     // Get the name of the image, ie. everything after (File-)
     var n = $scope.image.indexOf("File-");
     var imageName = $scope.image.substring(n+5);
-    console.log('ImageName: ' + imageName); // TODO remove
 
     // Registrer anaytics view event on image
     try {

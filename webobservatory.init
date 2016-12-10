@@ -1,0 +1,53 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          webobservatory
+# Required-Start:    $local_fs $network $named $time $syslog
+# Required-Stop:     $local_fs $network $named $time $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Description:       init.d script for webobservatory mean webapp
+### END INIT INFO
+
+NODE_ENV=production
+USER="www-data"
+FOREVER="/usr/bin/forever"
+EXEC="su -l $USER -c"
+
+PIDFILE=/var/run/webobservatory.pid
+LOGFILE=/var/log/webobservatory.log
+
+start() {
+  echo 'Starting service…' >&2
+  $EXEC "$FOREVER start /srv/webobservatory/server.js"
+  echo 'Service started' >&2
+}
+
+stop() {
+  echo 'Stopping service…' >&2
+  $EXEC "$FOREVER stopall"
+  echo 'Service stopped' >&2
+}
+
+status() {
+  echo 'Staus webobservatory service forever process...' >&2
+  $EXEC "$FOREVER list"
+  echo 'Done' >&2
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|restart}"
+esac

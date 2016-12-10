@@ -1,5 +1,7 @@
 // public/js/controllers/GalleryDSOCtrl.js
-angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function($scope, GalleryDSO, Main) {
+angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function($scope, $window, GalleryDSO, Main) {
+
+    $window.document.title = 'Gallery DSO - ' + $scope.item_main[0].name;
 
     $scope.item_dso = [];
     $scope.dso_range = [];

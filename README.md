@@ -21,7 +21,7 @@ This is not a matured app used by a multitude of users over a longer time period
 <br>
 #### Install Webobservatory
 * The install script is made for Ubuntu 16.04 and newer, for Ubuntu < 16.04 change the mongodb repo acording to [Install MongoDB Community Edition](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#install-mongodb-community-edition) i.e change xenial, trusty, precise.
-* For Ubuntu < 15.04 "Upstart" is not supported and the mongodb.service and webobservatory.service will not work. Init scripts should be made to enable mongodb and webobservatory to run on start.
+* For Ubuntu < 15.04 "Upstart" is not supported and the mongodb.service and webobservatory.service will not work. Init scripts have been made to enable mongodb and webobservatory to run on start.
 * It should be possible to run Webobservatory on all systems that support MongoDB and NodeJS. Have a look in the /install.sh script and make necessary changes.
 ```
 mkdir ~/Projects
@@ -31,6 +31,9 @@ cd webobservatory
 
 # Do NOT use 'sudo ./install.sh' You will be prompted for password when it's needed
 ./install.sh
+
+# For Ubuntu < 15.04 run the install inits script.
+sudo ./install-inits.sh
 ```
 
 <br>
@@ -41,7 +44,7 @@ git pull; sudo su -s /bin/bash -c "/usr/bin/forever restartall" www-data
 ```
 
 <br>
-#### Start and enable (start on boot) services
+#### Start and enable (start on boot) services, Ubuntu 15.04 and up
 ```
 sudo systemctl start mongodb
 sudo systemctl enable mongodb
@@ -49,6 +52,17 @@ sudo systemctl enable mongodb
 sudo systemctl start webobservatory
 sudo systemctl enable webobservatory
 ```
+
+<br>
+#### Start and enable (start on boot) services, Ubuntu Older than 15.04
+```
+sudo service mongodb start
+sudo update-rc.d mongodb defaults
+
+sudo service webobservatory start
+sudo update-rc.d webobservatory defaults
+```
+
 
 <br>
 #### Sart mongodb and webobservatory manually
@@ -95,7 +109,7 @@ db.logins.remove({login_user_email : "user@domain.com"});
 db.logins.remove({login_user_email : "user@webobservatory.test});
 ```
 One more reason not to use the default user is that "author" is saved to the db when creating and editing atricles, and gallery entries.
-If you use the default user, all articles will display Created by: user, Last edited by: user, aso, when the frontend for authors is implemented.
+If you use the default user, all articles will display Created by: user, Last edited by: user, aso.
 
 <br>
 #### Add Google Analytics (this is strictly optional).

@@ -1,5 +1,7 @@
 // public/js/controllers/BlogCtrl.js
-angular.module('BlogCtrl', []).controller('BlogController', function($scope, Blog, Main) {
+angular.module('BlogCtrl', []).controller('BlogController', function($scope, $window, Blog, Main) {
+
+    $window.document.title = 'Blog - ' + $scope.item_main[0].name;
 
     $scope.item_blog = [];
     $scope.asc = localStorage.getItem('asc');

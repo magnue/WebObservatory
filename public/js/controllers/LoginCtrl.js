@@ -1,5 +1,7 @@
 // public/js/controllers/LoginCtrl.js
-angular.module('LoginCtrl', []).controller('LoginController', function($scope, Login, Main) {
+angular.module('LoginCtrl', []).controller('LoginController', function($scope, $window, Login, Main) {
+
+    $window.document.title = 'Login - ' + localStorage.getItem('sitename');
 
     $scope.test = $scope.user + ' Logged in';
     $scope.user = localStorage.getItem('user');

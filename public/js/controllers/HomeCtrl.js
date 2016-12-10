@@ -1,5 +1,7 @@
 // public/js/controllers/HomeCtrl.js
-angular.module('HomeCtrl', []).controller('HomeController', function($scope, Main) {
+angular.module('HomeCtrl', []).controller('HomeController', function($scope, $window, Main) {
+
+    $window.document.title = $scope.item_main[0].name;
 
     try {
         ga('set', 'page', '/');
