@@ -126,7 +126,7 @@
             <div class="inner">
 
                 <h2 class="major">{{ item_main[0].planetary_summary_header }}</h2>
-                <p>{{ item_main[0].planetary_summary_text }}</p>
+                <p><tag-code model="item_main[0].planetary_summary_text"></tag-code></p>
                 <div ng-if="planetary_range.length > 1">
                     <i ng-if="asc == 'false' || !asc" ng-click="toggle_asc()" class="fa fa-sort-desc savebutton right tooltip"><span class="tooltiptext">Sort new first</span></i>
                     <i ng-if="asc != 'false' && asc" ng-click="toggle_asc()" class="fa fa-sort-asc savebutton right tooltip"><span class="tooltiptext">Sort new last</span></i>
@@ -136,11 +136,11 @@
                     <article data-ng-repeat="i in planetary_range" class="relative">
                         <a href="{{ '/image-view?' + item_planetary[i].image_planetary_url }}" target="_blank" class="image"><img src="{{ item_planetary[i].image_planetary_preview_url }}" alt="" /></a>
                         <h3 class="major">{{ item_planetary[i].image_planetary_name }}</h3>
-                        <p>{{ item_planetary[i].image_planetary_summary }}</p>
+                        <p><tag-code model="item_planetary[i].image_planetary_summary"></tag-code></p>
                         <a href ng-click="expand = !expand" class="special">Read on</a>
                         <div ng-show="expand">
                             <p data-ng-repeat="j in planetary_paragraph_range[i]">
-                                {{ item_planetary[i].image_planetary_article[j] }}
+                                <tag-code model="item_planetary[i].image_planetary_article[j]"></tag-code>
                             </p>
                         </div>
                         <br ng-if="item_planetary[i].image_planetary_created_by"/>

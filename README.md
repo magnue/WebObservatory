@@ -8,10 +8,10 @@
 
 <br>
 ##### What is Webobservatory?
-It's a personal website where you can upload your images of the night sky, in the three galleries. You can also add all the info about your observatory (or other equipment used) in the about page, and blog about your experiences in the blog. You also have a weather page, where you can add your location to Clear Outside and YR, for live weather updates. Besides this you can edit all the content "in place". No need for a edit interface, or to edit content in the database. The edit options are pretty basic, but you can customize the site name, the header an tagline, toggle pages on and off, and add your own pictures for the page descriptions on the homepage. You can add, delete or edit About, Weather and Blog articles, with the option to add paragraphs, images to paragraphs, position the images left or right or toggle images on and off if you are not sure if you want to keep them. The DSO, Planetary and Special galleries work in a similar way. You can upload the full image or upload a preview. You can at any point update the preview, the full size image or both. You can also add a summary of the image, and add multiple paragraphs in the "read on" section. Webobservatory also supports authentication to the back end using sha256 tokens, and AES-256 encryption.
+It's a personal website where you can upload your images of the night sky, in the three galleries. You can also add all the info about your observatory (or other equipment used) in the about page, and blog about your experiences in the blog. You also have a weather page, where you can add your location to Clear Outside and YR, for live weather updates. Besides this you can edit all the content "in place". No need for a edit interface, or to edit content in the database. The edit options are ~~pretty basic~~ evolving, but you can customize the site name, the header an tagline, toggle pages on and off, and add your own pictures for the page descriptions on the homepage. You can add, delete or edit About, Weather and Blog articles, with the option to add paragraphs, images to paragraphs, position the images left or right or toggle images on and off if you are not sure if you want to keep them. The DSO, Planetary and Special galleries work in a similar way. You can upload the full image or upload a preview. You can at any point update the preview, the full size image or both. You can also add a summary of the image, and add multiple paragraphs in the "read on" section. Webobservatory also supports authentication to the back end using sha256 tokens, and AES-256 encryption.
 
 ##### What is it not?
-This is not a matured app used by a multitude of users over a longer time period. This means that all the kinks are not ironed out, and all the features one might want is not implemented yet. When writing text in the app, all html is sanitized, so you can not add hyperlinks "pre" tags, or any other html syntax. I Will hopefully implement the choice to add pre formatted data, hyperlinks and more, but I'm not sure when. The authentication to the back end with handshake and AES encryption is implemented by me using the node-forge library. https://www.npmjs.com/package/node-forge It should not be trivial to hack, but if you feel the security aspect is very important, you should set up express to use ssl "https".
+This is not a matured app used by a multitude of users over a longer time period. This means that all the kinks are not ironed out, and all the features one might want is not implemented yet. When writing text in the app, all html is sanitized, ~~so you can not add hyperlinks "pre" tags, or any other html syntax. I Will hopefully implement the choice to add pre formatted data, hyperlinks and more, but I'm not sure when.~~ The authentication to the back end with handshake and AES encryption is implemented by me using the node-forge library. https://www.npmjs.com/package/node-forge It should not be trivial to hack, but if you feel the security aspect is very important, you should set up express to use ssl "https".
 
 <br>
 #### Attributions
@@ -118,4 +118,24 @@ Rename public/js/analytics.default, and add your tracking id.
 cd ~/Projects/webobservatory/public/js/
 cp analytics.default analytics.js
 vi analytics.js
+```
+
+<br>
+#### Edit with rich content.
+As of now some of the basic ritch html content is availible.
+Simply att the TagCode markup when editing.
+As Html is still sabnitized the pre tag does not allways work as expected.
+When editing add the `[tc:pre][/tc:pre]` tags first, and paste content in the middle.
+```
+[tc:bold]Bold[/tc:bold]
+[tc:italic]Italic[/tc:italic]
+[tc:del]Striketrough[/tc:del]
+[tc:u]Underlined[/tc:u]
+[tc:sup]Super text[/tc:sup]
+[tc:sub]Sub text[/tc:sub]
+[tc:code]00011110011[/tc:code]
+[tc:pre]foreach (var e in items) { e.iterations++ };[/tc:pre]
+[tc:highlight]Highlighted[/tc:highlight]
+[tc:hyperlink ref="https://github.com/magnue/webobservatory"][tc:span]This repository[/tc:span][/tc:hyperlink]
+[tc:youtube youid="2s6tHyAz6p0"][/tc:youtube]
 ```

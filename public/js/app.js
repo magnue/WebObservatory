@@ -10,4 +10,5 @@ angular.module('WebObservatory', ['ngRoute', 'appRoutes'
     , 'WeatherCtrl', 'WeatherService'
     , 'BlogCtrl', 'BlogService'
     , 'UploadCtrl', 'UploadService'
-    , 'ImageViewCtrl',]);
+    , 'ImageViewCtrl'
+    , 'TagCodeDirective', 'TagCodeTemplatesDirective']);

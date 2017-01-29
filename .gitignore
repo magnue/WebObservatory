@@ -1,6 +1,7 @@
 *~
 *.swp
 public/libs/
+bower_components/
 node_modules/
 public/images/gallery-dso/
 public/images/gallery-planetary/

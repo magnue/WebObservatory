@@ -139,18 +139,22 @@
         <div class="wrapper">
             <div class="inner">
                 <h2 class="major">{{ item_main[0].about_summary_header }}</h2>
-                <p>{{ item_main[0].about_summary_text }}</p>
+                <p><tag-code model="item_main[0].about_summary_text">Loading...</tag-code></p>
                 <div ng-if="about_article_range.length > 1">
                     <i ng-if="asc == 'false' || !asc" ng-click="toggle_asc()" class="fa fa-sort-desc savebutton right tooltip"><span class="tooltiptext">Sort new first</span></i>
                     <i ng-if="asc != 'false' && asc" ng-click="toggle_asc()" class="fa fa-sort-asc savebutton right tooltip"><span class="tooltiptext">Sort new last</span></i>
                 </div>
                 <div data-ng-repeat="i in about_article_range">
-                    <h3 contenteditable="{{ loggedin ? 'true' : 'false' }}" class="major">{{ item_about[i].about_article_header }}</h3>
+                    <h3 class="major">{{ item_about[i].about_article_header }}</h3>
                     <div data-ng-repeat="j in about_article_paragraph_range[i]">
                         <span ng-if="item_about[i].about_toggle_image[j]" ng-class="item_about[i].about_image_left[j] ? 'image left' : 'image right'">
                             <img ng-src="{{ item_about[i].about_article_paragraph_image[j] }}" alt="" />
                         </span>
-                        <p style="{{ j == item_about[i].about_article_paragraph.length -1 ? 'margin: 0 0 0.5em 0;' : 'margin: 0 0 2em 0;' }}">{{ item_about[i].about_article_paragraph[j] }}</p>
+                        <p>
+                            <tag-code model="item_about[i].about_article_paragraph[j]" style="{{ j == item_about[i].about_article_paragraph.length -1 ? 'margin: 0 0 0.5em 0;' : 'margin: 0 0 2em 0;' }}">
+                                Loading...
+                            </tag-code>
+                        </p>
                     </div>
                     <div class="edit-info-margin">
                         <i ng-if="item_about[i].about_created_by" class="fa fa-pencil">
