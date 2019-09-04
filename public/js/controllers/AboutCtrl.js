@@ -12,8 +12,8 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, $
     } catch (err) {
         ; // nothing to do here, simply means analytics.js is not in use
     }
-    
-    About.get().success(function(item)
+
+    About.get().then(function(item)
     {
         $scope.item_about = item;
 
@@ -58,7 +58,7 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, $
     };
 
     $scope.undo_summary_about = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].about_summary_header = item[0].about_summary_header;
             $scope.item_main[0].about_summary_text = item[0].about_summary_text;
         })
@@ -79,7 +79,7 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, $
     };
 
     $scope.undo_sentence_about = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].about_sentence = item[0].about_sentence;
         })
         $scope.item_main[0].about_sentence = '';
@@ -93,7 +93,7 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, $
     };
 
     $scope.undo_article = function(i) {
-        About.get().success(function(item) {
+        About.get().then(function(item) {
             $scope.item_about = null;
             $scope.item_about = item;
 
@@ -186,7 +186,7 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, $
                     , article_paragraph_image
                     , article_toggle_image
                     , article_toggle_left)
-            .success(function(success) {
+            .then(function(success) {
                 $scope.undo_article(i);
             });
         } else {
@@ -202,7 +202,7 @@ angular.module('AboutCtrl', []).controller('AboutController', function($scope, $
 
     $scope.delete_article = function(i) {
         About.delete($scope, $scope.item_about[i]._id)
-        .success(function(success) {
+        .then(function(success) {
             $scope.undo_article(i);
         })
     };

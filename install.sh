@@ -1,24 +1,9 @@
 #!/bin/bash
-# Install MongoDB
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
-sudo apt-get update
-sudo apt-get install -y mongodb-org
-
-sudo cp mongodb.service /etc/systemd/system/mongodb.service
-sudo chown root:root /etc/systemd/system/mongodb.service
-sudo chmod 644 /etc/systemd/system/mongodb.service
-
-sudo cp webobservatory.service /etc/systemd/system/webobservatory.service
-sudo chown root:root /etc/systemd/system/webobservatory.service
-sudo chmod 644 /etc/systemd/system/webobservatory.service
-
-systemctl daemon-reload
-
 # Install nodejs and dependencies
-curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y libcurl4 curl
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get update
-sudo apt-get install nodejs
+sudo apt-get install -y nodejs
 sudo npm install -g bower
 sudo npm install -g forever
 sudo npm install -g requirejs
@@ -29,13 +14,28 @@ npm install compression
 npm install
 bower install
 
+# Install MongoDB
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb.list
+sudo apt-get update
+sudo apt-get install -y libcurl3 mongodb-org
+
+sudo cp mongodb.service /etc/systemd/system/mongodb.service
+sudo chown root:root /etc/systemd/system/mongodb.service
+sudo chmod 644 /etc/systemd/system/mongodb.service
+
+sudo cp webobservatory.service /etc/systemd/system/webobservatory.service
+sudo chown root:root /etc/systemd/system/webobservatory.service
+sudo chmod 644 /etc/systemd/system/webobservatory.service
+
+sudo systemctl daemon-reload
+
 # Hackish fix. node-forge require almondy in node_modules/node-forge/node_modules/almondy
 mkdir node_modules/node-forge/node_modules
 cp -r node_modules/almond/ ./node_modules/node-forge/node_modules/
 
-# Copy create and the forge.min.js to ./public/js/
-r.js -o node_modules/node-forge/minify.js
-cp node_modules/node-forge/js/forge.min.js ./public/js/
+# Copy forge.min.js to ./public/js/
+cp node_modules/node-forge/dist/forge.min.js ./public/js/
 
 # Create directories
 mkdir tmp

@@ -6,9 +6,13 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
         get : function() {
             var asc = localStorage.getItem('asc');
             if (asc != null && asc != 'false' && asc)
-                return $http.get('/api/gallerydso/reverse');
+                return $http.get('/api/gallerydso/reverse').then(function(response) {
+                    return response.data;
+                });
             else
-                return $http.get('/api/gallerydso');
+                return $http.get('/api/gallerydso').then(function(response) {
+                    return response.data;
+                });
         },
 
         // call to POST and create a new gallerydso item
@@ -25,7 +29,7 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
                         , image_dso_article     : image_dso_article });
 
             return Login.create(scope, json, '/api/gallerydso')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -36,7 +40,7 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('New article successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -55,9 +59,9 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
                         , image_dso_preview_url : image_dso_preview_url
                         , image_dso_summary     : image_dso_summary
                         , image_dso_article     : image_dso_article });
-            
+
             return Login.update(scope, json, '/api/gallerydso/edit')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -68,7 +72,7 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Update successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -77,7 +81,7 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
         delete : function(scope, id) {
             var json = ({ gallerydso_id : id });
             return Login.delete(scope, json, '/api/gallerydso/delete')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -88,10 +92,10 @@ angular.module('GalleryDSOService', []).factory('GalleryDSO', function($http, Lo
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Article successfully deleted');
-                } else 
+                } else
                     window.alert('Could not delete, something went wrong');
             })
         }
-    } 
+    }
 
 });

@@ -6,9 +6,13 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
         get : function() {
             var asc = localStorage.getItem('asc');
             if (asc != null && asc != 'false' && asc)
-                return $http.get('/api/weather/reverse');
+                return $http.get('/api/weather/reverse').then(function(response) {
+                    return response.data;
+                });
             else
-                return $http.get('/api/weather');
+                return $http.get('/api/weather').then(function(response) {
+                    return response.data;
+                });
         },
 
         // call to POST and create a new weather item
@@ -24,7 +28,7 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
                         , weather_toggle_image            : weather_toggle_image
                         , weather_image_left              : weather_image_left });
             return Login.create(scope, json, '/api/weather')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -35,7 +39,7 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('New article successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -54,9 +58,9 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
                         , weather_article_paragraph_image : weather_article_paragraph_image
                         , weather_toggle_image            : weather_toggle_image
                         , weather_image_left              : weather_image_left });
-            
+
             return Login.update(scope, json, '/api/weather/edit')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -67,7 +71,7 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Update successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -76,7 +80,7 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
         delete : function(scope, id) {
             var json = ({ weather_id : id });
             return Login.delete(scope, json, '/api/weather/delete')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -87,10 +91,10 @@ angular.module('WeatherService', []).factory('Weather', function($http, Login) {
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Article successfully deleted');
-                } else 
+                } else
                     window.alert('Could not delete, something went wrong');
             })
         }
-    } 
+    }
 
 });

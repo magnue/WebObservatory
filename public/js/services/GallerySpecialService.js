@@ -6,9 +6,13 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
         get : function() {
             var asc = localStorage.getItem('asc');
             if (asc != null && asc != 'false' && asc)
-                return $http.get('/api/galleryspecial/reverse');
+                return $http.get('/api/galleryspecial/reverse').then(function(response) {
+                    return response.data;
+                });
             else
-                return $http.get('/api/galleryspecial');
+                return $http.get('/api/galleryspecial').then(function(response) {
+                    return response.data;
+                });
         },
 
         // call to POST and create a new galleryspecial item
@@ -25,7 +29,7 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
                         , image_special_article     : image_special_article });
 
             return Login.create(scope, json, '/api/galleryspecial')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -36,7 +40,7 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('New article successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -55,9 +59,9 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
                         , image_special_preview_url : image_special_preview_url
                         , image_special_summary     : image_special_summary
                         , image_special_article     : image_special_article });
-            
+
             return Login.update(scope, json, '/api/galleryspecial/edit')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -68,7 +72,7 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Update successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -77,7 +81,7 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
         delete : function(scope, id) {
             var json = ({ galleryspecial_id : id });
             return Login.delete(scope, json, '/api/galleryspecial/delete')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -88,10 +92,10 @@ angular.module('GallerySpecialService', []).factory('GallerySpecial', function($
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Article successfully deleted');
-                } else 
+                } else
                     window.alert('Could not delete, something went wrong');
             })
         }
-    } 
+    }
 
 });

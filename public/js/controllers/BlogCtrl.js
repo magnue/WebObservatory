@@ -13,7 +13,7 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, $wi
         ; // nothing to do here, simply means analytics.js is not in use
     }
 
-    Blog.get().success(function(item)
+    Blog.get().then(function(item)
     {
         $scope.item_blog = item;
 
@@ -58,7 +58,7 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, $wi
     };
 
     $scope.undo_summary_blog = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].blog_summary_header = item[0].blog_summary_header;
             $scope.item_main[0].blog_summary_text = item[0].blog_summary_text;
         })
@@ -79,7 +79,7 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, $wi
     };
 
     $scope.undo_sentence_blog = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].blog_sentence = item[0].blog_sentence;
         })
         $scope.item_main[0].blog_sentence = '';
@@ -93,7 +93,7 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, $wi
     };
 
     $scope.undo_article = function(i) {
-        Blog.get().success(function(item) {
+        Blog.get().then(function(item) {
             $scope.item_blog = null;
             $scope.item_blog = item;
 
@@ -186,7 +186,7 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, $wi
                     , article_paragraph_image
                     , article_toggle_image
                     , article_toggle_left)
-            .success(function(success) {
+            .then(function(success) {
                 $scope.undo_article(i);
             });
         } else {
@@ -202,7 +202,7 @@ angular.module('BlogCtrl', []).controller('BlogController', function($scope, $wi
 
     $scope.delete_article = function(i) {
         Blog.delete($scope, $scope.item_blog[i]._id)
-        .success(function(success) {
+        .then(function(success) {
             $scope.undo_article(i);
         })
     }

@@ -18,39 +18,40 @@ angular.module('UploadService', []).factory('Upload', function($http, Login) {
                 },
                 data: { largeFile: file_large, smallFile: file_small }
             })
-            .success(function(res) {
-                console.log('UPLOAD: json return: ' + JSON.stringify(res));
+            .then(function(res) {
+                var data = res.data;
+                console.log('UPLOAD: json return: ' + JSON.stringify(data));
 
                 var json = ({ pub_path: image_path
-                            , largefilename: res.largefilename
-                            , smallfilename: res.smallfilename });
-                
-                if (!res.result) {
-                    window.alert(res.message);
+                            , largefilename: data.largefilename
+                            , smallfilename: data.smallfilename });
+
+                if (!data.result) {
+                    window.alert(data.message);
                     return;
                 }
 
                 Login.update(scope, json, '/api/upload/')
-                .success(function(encrypted_item) {
+                .then(function(encrypted_item) {
                     var auth_item;
                     var parsed = JSON.parse(encrypted_item);
                     if (typeof parsed.blob != 'undefined')
-                        auth_item = Login.decrypt(encrypted_item);
+                        var auth_item = Login.decrypt(encrypted_item);
                     else if (typeof parsed.blob == 'undefined') {
                         window.alert('Upload failed, not logged in?');
                         return;
                     }
                     if (typeof auth_item.result != 'undefined' && auth_item.result) {
                         window.alert('New image was successfully uploaded, remember to save article to keep changes');
-                        var largefilepath = res.largefilename == null ? null : 'images/' + image_path + '/' + res.largefilename;
-                        var smallfilepath = res.smallfilename == null ? null : 'images/' + image_path + '/small/' + res.smallfilename;
+                        var largefilepath = data.largefilename == null ? null : 'images/' + image_path + '/' + data.largefilename;
+                        var smallfilepath = data.smallfilename == null ? null : 'images/' + image_path + '/small/' + data.smallfilename;
                         $scope.$emit(image_path + '-uploaded', { largefilepath: largefilepath
                                                 , smallfilepath: smallfilepath });
-                    } else 
+                    } else
                         window.alert('Could not save, something went wrong');
                 })
-            })
-            .error(function(err) {
+            },
+            function(err) {
                 console.log('UPLOAD: http post failed with err = ' + err);
             })
         }

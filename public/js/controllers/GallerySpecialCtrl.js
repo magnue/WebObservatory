@@ -6,7 +6,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
     $scope.item_special = [];
     $scope.special_range = [];
     $scope.special_paragraph_range = [];
-    
+
     try {
         ga('set', 'page', '/gallery-special');
         ga('send', 'pageview');
@@ -14,7 +14,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
         ; // nothing to do here, simply means analytics.js is not in use
     }
 
-    GallerySpecial.get().success(function(item)
+    GallerySpecial.get().then(function(item)
     {
         $scope.item_special = item;
         for (var i = 0; i < $scope.item_special.length; i++) {
@@ -53,7 +53,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
     };
 
     $scope.undo_summary_special = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].special_summary_header = item[0].special_summary_header;
             $scope.item_main[0].special_summary_text = item[0].special_summary_text;
         })
@@ -74,7 +74,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
     };
 
     $scope.undo_sentence_special = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].special_sentence = item[0].special_sentence;
         })
         $scope.item_main[0].special_sentence = '';
@@ -88,7 +88,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
     };
 
     $scope.undo_special = function(i) {
-        GallerySpecial.get().success(function(item) {
+        GallerySpecial.get().then(function(item) {
             $scope.item_special = null;
             $scope.item_special = item;
 
@@ -177,7 +177,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
                     , special_preview_url
                     , special_summary
                     , special_paragraph)
-            .success(function(success) {
+            .then(function(success) {
                 $scope.undo_special(i);
             });
         } else {
@@ -193,7 +193,7 @@ angular.module('GallerySpecialCtrl', []).controller('GallerySpecialController', 
 
     $scope.delete_special = function(i) {
         GallerySpecial.delete($scope, $scope.item_special[i]._id)
-        .success(function(success) {
+        .then(function(success) {
             $scope.undo_special(i);
         })
     };

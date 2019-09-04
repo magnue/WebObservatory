@@ -1,8 +1,14 @@
 *~
 *.swp
-public/libs/
+exclude-rules
+package-lock.json
+tmp/
 bower_components/
 node_modules/
+public/google*.html
+public/robots.txt
+public/sitemap.xml
+public/libs/
 public/images/gallery-dso/
 public/images/gallery-planetary/
 public/images/gallery-special/
@@ -10,6 +16,7 @@ public/images/user-images
 public/images/article-about/
 public/images/article-blog/
 public/images/article-weather/
-tmp/
+public/assets/css/font-awesome.min.css.dis
+public/assets/css/main.css.dis
 app/routes/routes_contact.js
 public/js/forge.min.js

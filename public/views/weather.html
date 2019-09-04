@@ -187,7 +187,9 @@
                     <h3 class="major">{{ item_weather[i].weather_article_header }}</h3>
                     <div data-ng-repeat="j in weather_article_paragraph_range[i]">
                         <span ng-if="item_weather[i].weather_toggle_image[j]" ng-class="item_weather[i].weather_image_left[j] ? 'image left' : 'image right'">
-                            <img ng-src="{{ item_weather[i].weather_article_paragraph_image[j] }}" alt="" />
+                            <a ng-href="/image-view?{{ item_weather[i].weather_article_paragraph_image[j] }}" target="_blank">
+                                <img ng-src="{{ item_weather[i].weather_article_paragraph_image[j] }}" alt="" />
+                            </a>
                         </span>
                         <p> 
                             <tag-code model="item_weather[i].about_article_paragraph[j]" style="{{ j == item_weather[i].weather_article_paragraph.length -1 ? 'margin: 0 0 0.5em 0;' : 'margin: 0 0 2em 0;' }}">

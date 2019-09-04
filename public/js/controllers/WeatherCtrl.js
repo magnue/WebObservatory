@@ -17,7 +17,7 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
     $scope.item_weather = [];
     $scope.asc = localStorage.getItem('asc');
 
-    Weather.get().success(function(item)
+    Weather.get().then(function(item)
     {
         $scope.item_weather = item;
 
@@ -62,7 +62,7 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
     };
 
     $scope.undo_summary_weather = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].weather_summary_header = item[0].weather_summary_header;
             $scope.item_main[0].weather_summary_text = item[0].weather_summary_text;
         })
@@ -83,7 +83,7 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
     };
 
     $scope.undo_sentence_weather = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].weather_sentence = item[0].weather_sentence;
         })
         $scope.item_main[0].weather_sentence = '';
@@ -97,7 +97,7 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
     };
 
     $scope.undo_article = function(i) {
-        Weather.get().success(function(item) {
+        Weather.get().then(function(item) {
             $scope.item_weather = null;
             $scope.item_weather = item;
 
@@ -190,9 +190,9 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
                     , article_paragraph_image
                     , article_toggle_image
                     , article_toggle_left)
-            .success(function(success) {
+            .then(function(success) {
                 $scope.undo_article(i);
-            });            
+            });
         } else {
             Weather.update($scope
                     , $scope.item_weather[i]._id
@@ -206,7 +206,7 @@ angular.module('WeatherCtrl', []).controller('WeatherController', function($scop
 
     $scope.delete_article = function(i) {
         Weather.delete($scope, $scope.item_weather[i]._id)
-        .success(function(success) {
+        .then(function(success) {
             $scope.undo_article(i);
         })
     }

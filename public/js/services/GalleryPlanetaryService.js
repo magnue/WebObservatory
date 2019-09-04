@@ -6,9 +6,13 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
         get : function() {
             var asc = localStorage.getItem('asc');
             if (asc != null && asc != 'false' && asc)
-                return $http.get('/api/galleryplanetary/reverse');
+                return $http.get('/api/galleryplanetary/reverse').then(function(response) {
+                    return response.data;
+                });
             else
-                return $http.get('/api/galleryplanetary');
+                return $http.get('/api/galleryplanetary').then(function(response) {
+                    return response.data;
+                });
         },
 
         // call to POST and create a new galleryplanetary item
@@ -25,7 +29,7 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
                         , image_planetary_article     : image_planetary_article });
 
             return Login.create(scope, json, '/api/galleryplanetary')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -36,7 +40,7 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('New article successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -55,9 +59,9 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
                         , image_planetary_preview_url : image_planetary_preview_url
                         , image_planetary_summary     : image_planetary_summary
                         , image_planetary_article     : image_planetary_article });
-            
+
             return Login.update(scope, json, '/api/galleryplanetary/edit')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -68,7 +72,7 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Update successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -77,7 +81,7 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
         delete : function(scope, id) {
             var json = ({ galleryplanetary_id : id });
             return Login.delete(scope, json, '/api/galleryplanetary/delete')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -88,10 +92,10 @@ angular.module('GalleryPlanetaryService', []).factory('GalleryPlanetary', functi
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Article successfully deleted');
-                } else 
+                } else
                     window.alert('Could not delete, something went wrong');
             })
         }
-    } 
+    }
 
 });

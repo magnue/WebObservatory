@@ -6,9 +6,13 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
         get : function() {
             var asc = localStorage.getItem('asc');
             if (asc != null && asc != 'false' && asc)
-                return $http.get('/api/about/reverse');
+                return $http.get('/api/about/reverse').then(function(response) {
+                    return response.data;
+                });
             else
-                return $http.get('/api/about');
+                return $http.get('/api/about').then(function(response) {
+                    return response.data;
+                 });
         },
 
         // call to POST and create a new about item
@@ -24,7 +28,7 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
                         , about_toggle_image            : about_toggle_image
                         , about_image_left              : about_image_left });
             return Login.create(scope, json, '/api/about')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -35,7 +39,7 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('New article successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -54,9 +58,9 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
                         , about_article_paragraph_image : about_article_paragraph_image
                         , about_toggle_image            : about_toggle_image
                         , about_image_left              : about_image_left });
-            
+
             return Login.update(scope, json, '/api/about/edit')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -67,7 +71,7 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Update successfully saved');
-                } else 
+                } else
                     window.alert('Could not save, something went wrong');
             })
         },
@@ -76,7 +80,7 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
         delete : function(scope, id) {
             var json = ({ about_id : id });
             return Login.delete(scope, json, '/api/about/delete')
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -87,10 +91,10 @@ angular.module('AboutService', []).factory('About', function($http, Login) {
                 }
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     window.alert('Article successfully deleted');
-                } else 
+                } else
                     window.alert('Could not delete, something went wrong');
             })
         }
-    } 
+    }
 
 });

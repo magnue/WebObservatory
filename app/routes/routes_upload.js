@@ -19,15 +19,15 @@ var fs              = require('fs');
             var smallname = typeof req.files['smallFile'] == 'undefined' ? null : req.files['smallFile'][0].filename;
             if (!err)
                 res.json({result: true
-                    , message: 'successfully uploaded image to tmp'
-                    , largefilename: largename
-                    , smallfilename: smallname});
+                        , message: 'successfully uploaded image to tmp'
+                        , largefilename: largename
+                        , smallfilename: smallname});
             else
                 res.json({result: false
-                    , message: 'error when uploading image to tmp'
-                        + (JSON.stringify(err).search('EACCES') != -1
-                        ? ': directory access error'
-                        : ': unknown error')});
+                        , message: 'error when uploading image to tmp'
+                            + JSON.stringify(err).search('EACCES') != -1
+                            ? ': directory access error'
+                            : ': unknown error'});
         })
     })
 
@@ -43,7 +43,7 @@ var fs              = require('fs');
                 .then(function(auth) {
                     // use fs to move file to correct public subfolder.
                     // moving largeFile
-                    
+
                     var img_path = img_folder + req_json.pub_path + '/';
                     fs.rename(tmp_folder + req_json.largefilename, img_path + req_json.largefilename, function(err) {
                         if (err)

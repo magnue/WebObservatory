@@ -10,7 +10,7 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
     return {
         // call to POST and create a new login item
         signup : function(login_email, login_password) {
-            
+
             var md = forge.md.sha256.create();
             md.update(login_password);
             var login_sha256_password = md.digest().toHex();
@@ -18,7 +18,9 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
                 login_user_email: login_email
                 , login_user_sha256_password: login_sha256_password
                 });
-            return $http.post('/user/login', signup_data);
+            return $http.post('/user/login', signup_data).then(function(response) {
+                return response.data;
+            });
         },
 
         // initialize auth.
@@ -28,13 +30,14 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
                 login_user_email:login_email
                 });
             return $http.post('/user/login/auth', json)
-            .success(function(auth_item) {
+            .then(function(result) {
+                var auth_item = result.data;
                 if (typeof auth_item.result != 'undefined' && auth_item.result) {
                     // Hash password
                     var md = forge.md.sha256.create();
                     md.update(login_password);
                     var login_sha256_password = md.digest().toHex();
-                    
+
                     // Salt password
                     var md = forge.md.sha256.create();
                     md.update(login_sha256_password + auth_item.loggedin_user_sha256_salt);
@@ -57,14 +60,15 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
 
                     salt = auth_item.loggedin_user_sha256_salt;
                     localStorage.setItem('salt',salt);
+                    return auth_item;
                 } else {
                     cleanup(scope);
-                    console.log('INIT: auth_item.result != true. auth_item = ' + JSON.stringify(auth_item.toString));
+                    console.log('INIT: auth_item.result != true. auth_item = ' + JSON.stringify(auth_item));
                 }
-            })
-            .error(function(err) {
+            },
+            function(err) {
                 cleanup(scope);
-                console.log('INIT: http post failed with err = ' + err);
+                console.log('INIT: http post failed with err = ' + JSON.stringify(err));
             })
         },
 
@@ -92,9 +96,9 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
             var json = ({ logout_user: true });
 
             return auth(null, json, null, 'post', true)
-            .success(function(logout_item) {
-                item = JSON.parse(logout_item)
-                if (typeof item.result != 'undefined' && item) {
+            .then(function(logout_item) {
+                var item = JSON.parse(logout_item.data);
+                if (typeof item.result != 'undefined' && item.result) {
                     user_email = null;
                     localStorage.removeItem('email');
                     cleanup(scope);
@@ -102,11 +106,11 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
                     console.log('LOGOUT: logout failed, json = ' + JSON.stringify(item));
                     cleanup(scope);
                 }
-            })
-            .error(function(err) {
+            },
+            function(err) {
                 console.log('LOGOUT: logout failed, json = ' + JSON.stringify(err));
                 cleanup(scope);
-            })
+            });
         },
 
         // call to PUT and update a login password
@@ -126,7 +130,7 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
             var md = forge.md.sha256.create();
             md.update(current_hashed_password + localStorage.getItem('salt'));
             current_salted_password = md.digest().toHex();
-            
+
             localStorage.setItem('salted_password', current_salted_password);
 
             var res_json = ({
@@ -134,7 +138,8 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
             });
 
             return auth(null, res_json, null, 'put', true)
-            .success(function(encrypted_item) {
+            .then(function(result) {
+                encrypted_item = result.data;
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined') {
@@ -149,19 +154,20 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
                 if (auth_item != null && typeof auth_item.result != 'undefined' && auth_item.result) {
                     random_salt = auth_item.loggedin_user_random_sha256_salt;
                     localStorage.setItem('random',random_salt);
+                    return encrypted_item;
                 }
-            })
-            .error(function(err) {
+            },
+            function(err) {
                 console.log('AUTH: failed when changing password');
                 cleanup(scope);
-            })
+            });
         },
 
         // Export cleanup
         cleanup : function() {
             cleanup(null);
         },
-        
+
         // Export json_merge
         json_merge : function(json1, json2) {
             return json_merge(json1, json2);
@@ -197,7 +203,7 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
             } else if (str.search(/[a-z]/) == -1) {
                 window.alert('Password must contain a minimum of one lower case letter');
                 return false;
-            } else if (str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
+            } else if (str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+\"]/) != -1) {
                 window.alert('Password can only contain:\nupper / lower case letters\nnumbers\nand !@#$%^&*\\_+]/');
                 return false;
             }
@@ -231,7 +237,7 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
         if (json != null)
             merged_json = json_merge(json, res_json);
         var encrypted_json = encrypt(merged_json);
-        
+
         if (route == null)
             route = '/user/login/auth';
 
@@ -245,7 +251,8 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
             return promise;
         else {
             return promise
-            .success(function(encrypted_item) {
+            .then(function(result) {
+                var encrypted_item = result.data;
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -266,8 +273,9 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
                     cleanup(scope);
                     console.log('AUTH: returned result undefined or false, or failed to decrypt. auth_item = ' + auth_item);
                 }
-            })
-            .error(function(err) {
+                return encrypted_item;
+            },
+            function(err) {
                 cleanup(scope);
                 console.log('AUTH: http post failed with err = ' + err);
             })
@@ -286,7 +294,7 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
         localStorage.removeItem('loggedin');
         localStorage.removeItem('user');
         localStorage.removeItem('head');
-        
+
         if (scope) {
             scope.password = null;
             scope.user = null;
@@ -320,14 +328,14 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
         cipher.start({iv: iv});
         cipher.update(forge.util.createBuffer(str));
         cipher.finish();
-        
+
         var encrypted = cipher.output;
         var iv_out = forge.util.bytesToHex(iv);
         var blob_out = forge.util.bytesToHex(encrypted);
         var encrypted_json = {
             login_user_sha256_salted_email: salted_email
             , blob: blob_out};
-        
+
         return JSON.stringify(encrypted_json);
     }
 
@@ -354,7 +362,7 @@ angular.module('LoginService', []).factory('Login', ['$http', function($http) {
         } catch (err) {
             json = null;
         }
-        
+
         return json;
     }
 }]);

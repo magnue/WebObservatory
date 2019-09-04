@@ -6,7 +6,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
     $scope.item_planetary = [];
     $scope.planetary_range = [];
     $scope.planetary_paragraph_range = [];
-    
+
     try {
         ga('set', 'page', '/gallery-planetary');
         ga('send', 'pageview');
@@ -14,7 +14,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
         ; // nothing to do here, simply means analytics.js is not in use
     }
 
-    GalleryPlanetary.get().success(function(item)
+    GalleryPlanetary.get().then(function(item)
     {
         $scope.item_planetary = item;
         for (var i = 0; i < $scope.item_planetary.length; i++) {
@@ -53,7 +53,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
     };
 
     $scope.undo_summary_planetary = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].planetary_summary_header = item[0].planetary_summary_header;
             $scope.item_main[0].planetary_summary_text = item[0].planetary_summary_text;
         })
@@ -74,7 +74,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
     };
 
     $scope.undo_sentence_planetary = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].planetary_sentence = item[0].planetary_sentence;
         })
         $scope.item_main[0].planetary_sentence = '';
@@ -88,7 +88,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
     };
 
     $scope.undo_planetary = function(i) {
-        GalleryPlanetary.get().success(function(item) {
+        GalleryPlanetary.get().then(function(item) {
             $scope.item_planetary = null;
             $scope.item_planetary = item;
 
@@ -177,7 +177,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
                     , planetary_preview_url
                     , planetary_summary
                     , planetary_paragraph)
-            .success(function(success) {
+            .then(function(success) {
                 $scope.undo_planetary(i);
             });
         } else {
@@ -193,7 +193,7 @@ angular.module('GalleryPlanetaryCtrl', []).controller('GalleryPlanetaryControlle
 
     $scope.delete_planetary = function(i) {
         GalleryPlanetary.delete($scope, $scope.item_planetary[i]._id)
-        .success(function(success) {
+        .then(function(success) {
             $scope.undo_planetary(i);
         })
     };

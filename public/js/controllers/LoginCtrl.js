@@ -18,13 +18,13 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
             return;
 
         Login.signup($scope.email, $scope.password)
-        .success(function(auth_item) {
+        .then(function(auth_item) {
             if (typeof auth_item.result != 'undefined' && auth_item.result)
                 $scope.signed_up = $scope.email + ' signed up';
             else
                 $scope.signed_up = 'Signup failed';
-        })
-        .error(function(err) {
+        },
+        function(err) {
             $cope.signed_up = 'Signup failed';
         });
     },
@@ -33,29 +33,27 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
         if (!Login.checkPwd($scope.password) || !Login.checkMail($scope.email))
             return;
 
-        var promise = Login.init($scope, $scope.email, $scope.password);
-        promise.success(function(auth_item) {
+        Login.init($scope, $scope.email, $scope.password).then(function(auth_item) {
             if (typeof auth_item.result != 'undefined' && auth_item.result)
                 $scope.auth();
             else if (typeof auth_item.result != 'undefined' && !auth_item.result) {
                 $scope.logged_in = 'Login failed';
                 window.alert('Login failed: ' + auth_item.message);
             } else {
+                console.log("Send Login: auth_item.result undefined or false: " + auth_item.result);
                 $scope.logged_in = 'Login failed';
             }
-        });
-        promise.error(function(err) {
+        },
+        function(err) {
+            console.log("Send Login .then failed: " + JSON.stringify(err));
             $scope.logged_in = 'Login failed';
         });
     },
 
     $scope.send_logout = function() {
-        Login.logout($scope).success(function(logout_item) {
-            item = JSON.parse(logout_item);
-            if (typeof item.result != 'undefined' && item.result) {
-                $scope.email = null;
-                $scope.logged_in = 'Log in';
-            }
+        Login.logout($scope).then(function(logout_item) {
+            $scope.email = null;
+            $scope.logged_in = 'Log in';
         })
     },
 
@@ -63,9 +61,9 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
         if ($scope.loggedin && !$scope.change_password) {
             $scope.change_password = true;
         } else if ($scope.loggedin && $scope.change_password && $scope.new_password != null && $scope.password != null) {
-            
+
             Login.update_password($scope, $scope.new_password, $scope.password)
-            .success(function(encrypted_item) {
+            .then(function(encrypted_item) {
                 var auth_item;
                 var parsed = JSON.parse(encrypted_item);
                 if (typeof parsed.blob != 'undefined')
@@ -89,8 +87,7 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
     },
 
     $scope.send_test = function() {
-        var promise = Login.auth($scope, null, null, 'post');
-        promise.success(function(encrypted_item) {
+        Login.auth($scope, null, null, 'post').then(function(encrypted_item) {
             var auth_item;
             var parsed = JSON.parse(encrypted_item);
             if (typeof parsed.blob != 'undefined')
@@ -105,15 +102,14 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
             else {
                 $scope.test = 'Not logged in';
             }
-        });
-        promise.error(function(err) {
+        },
+        function(err) {
             $scope.test = 'Not logged in';
         });
     },
 
     $scope.auth = function() {
-        var promise = Login.auth($scope, null, null, 'post');
-        promise.success(function(encrypted_item) {
+        Login.auth($scope, null, null, 'post').then(function(encrypted_item) {
             var auth_item;
             var parsed = JSON.parse(encrypted_item);
             if (typeof parsed.blob != 'undefined')
@@ -135,14 +131,14 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
             } else {
                 $scope.logged_in = 'Loggin failed';
             }
-        });
-        promise.error(function(err) {
+        },
+        function(err) {
             $scope.logged_in = 'Login failed';
         });
     }
 
     $scope.undo_summary_login = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].login_summary_header = item[0].login_summary_header;
             $scope.item_main[0].login_summary_text = item[0].login_summary_text;
         })
@@ -163,7 +159,7 @@ angular.module('LoginCtrl', []).controller('LoginController', function($scope, $
     };
 
     $scope.undo_sentence_login = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].login_sentence = item[0].login_sentence;
         })
         $scope.item_main[0].login_sentence = '';

@@ -5,18 +5,18 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, Mai
     $scope.email = localStorage.getItem('email');
     $scope.user = localStorage.getItem('user');
     $scope.head = localStorage.getItem('head');
-    $scope.sitename = localStorage.getItem('sitename');
 
     $scope.item_main = [];
-    Main.get().success(function(item)
+    Main.get().then(function(item)
     {
         $scope.item_main = item;
         $scope.alternate();
         $scope.about_header = 'About ' + item[0].name;
-        $scope.weather_header = 'Weather @' + item[0].name;
-        $scope.blog_header = item[0].name + '\'s Blog'; 
+        $scope.weather_header = 'Weather @ ' + item[0].name;
+        $scope.blog_header = item[0].name + '\'s Blog';
         $scope.login_header = 'Login and sign up on ' + item[0].name;
         $scope.sitename = item[0].name;
+        localStorage.setItem('sitename', item[0].name);
 
         $scope.yr_place_name = item[0].yr_place.replace(/^.*[\\\/]/, '');
         $scope.yr_html_url = {src:"http://www.yr.no/place/" + item[0].yr_place + "/external_box_hour_by_hour.html"};
@@ -30,9 +30,9 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, Mai
         $scope.blog_url = item[0].toggle[5] ? '/blog' : '/404.html';
 
     });
-    
+
     $scope.undo_footer_msg = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].footer_header = item[0].footer_header;
             $scope.item_main[0].footer_text = item[0].footer_text;
         })
@@ -53,7 +53,7 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, Mai
     };
 
     $scope.undo_footer = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].footer_yourname      = item[0].footer_yourname;
             $scope.item_main[0].footer_youradress    = item[0].footer_youradress;
             $scope.item_main[0].footer_yourzip       = item[0].footer_yourzip;
@@ -112,7 +112,7 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, Mai
         $scope.item_main[0].footer_yourinstagram = yourinstagram;
         $scope.item_main[0].footer_yourflickr    = yourflickr;
         $scope.item_main[0].footer_yourgithub    = yourgithub;
-        
+
         Main.update($scope, $scope.item_main[0]);
     };
 
@@ -173,12 +173,12 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, Mai
         {
             var name = String($scope.name).replace(/<[^>]+>/gm, '');
             var message = String($scope.message).replace(/<[^>]+>/gm, '');
-            var contact_data = JSON.stringify({name: name, email: $scope.email, message: message}); 
-            Main.send_contact(contact_data).success(function()
+            var contact_data = JSON.stringify({name: name, email: $scope.email, message: message});
+            Main.send_contact(contact_data).then(function()
             {
                 $scope.mail_sent = "Message sent";
             });
         }
     };
-            
+
 })

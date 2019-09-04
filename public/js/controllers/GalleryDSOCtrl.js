@@ -6,7 +6,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
     $scope.item_dso = [];
     $scope.dso_range = [];
     $scope.dso_paragraph_range = [];
-    
+
     try {
         ga('set', 'page', '/gallery-dso');
         ga('send', 'pageview');
@@ -14,7 +14,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
         ; // nothing to do here, simply means analytics.js is not in use
     }
 
-    GalleryDSO.get().success(function(item)
+    GalleryDSO.get().then(function(item)
     {
         $scope.item_dso = item;
         for (var i = 0; i < $scope.item_dso.length; i++) {
@@ -53,7 +53,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
     };
 
     $scope.undo_summary_dso = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].dso_summary_header = item[0].dso_summary_header;
             $scope.item_main[0].dso_summary_text = item[0].dso_summary_text;
         })
@@ -74,7 +74,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
     };
 
     $scope.undo_sentence_dso = function() {
-        Main.get().success(function(item) {
+        Main.get().then(function(item) {
             $scope.item_main[0].dso_sentence = item[0].dso_sentence;
         })
         $scope.item_main[0].dso_sentence = '';
@@ -88,7 +88,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
     };
 
     $scope.undo_dso = function(i) {
-        GalleryDSO.get().success(function(item) {
+        GalleryDSO.get().then(function(item) {
             $scope.item_dso = null;
             $scope.item_dso = item;
 
@@ -177,7 +177,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
                     , dso_preview_url
                     , dso_summary
                     , dso_paragraph)
-            .success(function(success) {
+            .then(function(success) {
                 $scope.undo_dso(i);
             });
         } else {
@@ -193,7 +193,7 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
 
     $scope.delete_dso = function(i) {
         GalleryDSO.delete($scope, $scope.item_dso[i]._id)
-        .success(function(success) {
+        .then(function(success) {
             $scope.undo_dso(i);
         })
     };
@@ -203,8 +203,8 @@ angular.module('GalleryDSOCtrl', []).controller('GalleryDSOController', function
         $scope.toggle_modal(-1);
         $scope.item_dso[i].image_dso_url = args.largefilepath == null ? $scope.item_dso[i].image_dso_url : args.largefilepath;
         $scope.item_dso[i].image_dso_preview_url = args.smallfilepath == null ? $scope.item_dso[i].image_dso_preview_url : args.smallfilepath;
-        console.log('DSO: on emit, article_modal_active = ' + $scope.article_modal_active 
-                    + ', largefilepath = ' + args.largefilepath 
+        console.log('DSO: on emit, article_modal_active = ' + i
+                    + ', largefilepath = ' + args.largefilepath
                     + ', smallfilepath = ' + args.smallfilepath);
     });
 
