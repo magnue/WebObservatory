@@ -54,6 +54,9 @@ mkdir public/images/gallery-special/small
 mkdir public/images/user-images
 mkdir public/images/user-images/small
 
+#Move angular lib to public
+cp -R bower_components public/libs
+
 # Set user $USER and group www-data
 sudo chown -R $USER:www-data tmp
 find . -type d -exec sudo chown $USER:www-data public/images/ {} \;

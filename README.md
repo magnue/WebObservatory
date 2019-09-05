@@ -87,6 +87,13 @@ mongorestore --gzip --archive="webobservatory.archive.gz" --db=test
 mongorestore --gzip --archive="default_db.archive.gz" --db=test
 ```
 
+#### Default user
+There is a default user set up for convenience.
+This user is active and admin.
+```
+user@webobservatory.test
+passwd Web123
+```
 
 #### Approve new users (editors and admins)
 When mongodb is started type 'mongo' in the terminal, you then get the mongodb console
